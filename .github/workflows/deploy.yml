@@ -1,0 +1,44 @@
+# Auto-deploys the site to GitHub Pages whenever you push to the main branch.
+# No tokens or deploy keys needed — GitHub provides scoped permissions for this run.
+name: Deploy to GitHub Pages
+
+on:
+  # Runs whenever you commit to main (e.g. after editing index.html on the web)
+  push:
+    branches: [main]
+  # Lets you also trigger it by hand from the Actions tab
+  workflow_dispatch:
+
+# Permissions this workflow needs to publish Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# If you push twice quickly, cancel the older run and keep the newest
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload the site as a Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # "." means "publish the whole repo root" — that's where index.html lives
+          path: "."
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
