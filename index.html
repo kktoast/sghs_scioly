@@ -226,7 +226,7 @@
 <script>
 /* ================= CONFIG ================= */
 /* Paste the Web App URL from your Google Apps Script deployment between the quotes. */
-const SUBMIT_URL = "https://script.google.com/a/macros/stargateschool.org/s/AKfycbxCLTvqS7npPgSjF9AFDxqZnIHYToczFra_aryxFQ6VhdwLpnXdSai93Sim0vCRO06Q/exec";
+const SUBMIT_URL = "https://script.google.com/a/macros/stargateschool.org/s/AKfycbxw5lEH8C0X4bLAQtt4-aN4frq3vwcwH9u7vZJDdXm48AQco3X4rBMM8Y4tJ0fMZnr_/exec";
 function isConfigured(){ return SUBMIT_URL && !/PASTE_|_HERE/.test(SUBMIT_URL); }
 
 /* ================= Data — Division C, 2027 season (soinc.org) ================= */
@@ -384,23 +384,39 @@ function resetAll(){
 /* ================= Submit ================= */
 function setSubmitting(b){state.submitting=b;const btn=document.getElementById("btnSubmit");btn.disabled=b||!state.picked.size;btn.textContent=b?"Submitting…":"Submit selection";}
 document.getElementById("btnSubmit").onclick=submitSelection;
-async function submitSelection(){
+function submitSelection(){
   if(!state.picked.size)return;
   if(!isConfigured()){toast("Submissions aren't set up yet — the Apps Script URL is missing.");return;}
   const events=pickedEvents().map(e=>e.n);
   if(!confirm(`Submit your final selection of ${events.length} event${events.length>1?"s":""}? You won't be able to change it afterward.`))return;
   setSubmitting(true);
   const payload={name:state.name,grade:state.grade,events:events,count:events.length};
-  try{
-    const res=await fetch(SUBMIT_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)});
-    const data=await res.json();
-    if(data.status==="ok"){finishSubmission(payload,false);}
-    else if(data.status==="duplicate"){finishSubmission(payload,true);}
-    else{throw new Error(data.message||"Unexpected response");}
-  }catch(err){
+  const params=new URLSearchParams({name:state.name,grade:state.grade,events:events.join("||")});
+  const url=SUBMIT_URL+(SUBMIT_URL.indexOf("?")>-1?"&":"?")+params.toString();
+  jsonp(url).then(data=>{
+    if(data&&data.status==="ok"){finishSubmission(payload,false);}
+    else if(data&&data.status==="duplicate"){finishSubmission(payload,true);}
+    else{throw new Error((data&&data.message)||"Unexpected response");}
+  }).catch(err=>{
+    console.error("Submit failed:",err);
     setSubmitting(false);
-    toast("Couldn't submit — check your connection and try again.");
-  }
+    toast('Couldn\u2019t submit. Check that the Apps Script is deployed with access set to \u201cAnyone,\u201d and that the /exec URL is correct.');
+  });
+}
+/* Loads the Apps Script response via a <script> tag (JSONP) so the browser's
+   cross-origin rules never block reading the reply. */
+function jsonp(url){
+  return new Promise((resolve,reject)=>{
+    const cb="so_cb_"+Math.random().toString(36).slice(2);
+    let done=false;
+    const timer=setTimeout(()=>{if(!done){cleanup();reject(new Error("timeout"));}},15000);
+    window[cb]=data=>{done=true;cleanup();resolve(data);};
+    const s=document.createElement("script");
+    s.src=url+"&callback="+cb;
+    s.onerror=()=>{if(!done){cleanup();reject(new Error("network/script error"));}};
+    function cleanup(){clearTimeout(timer);try{delete window[cb];}catch(e){window[cb]=undefined;}if(s.parentNode)s.parentNode.removeChild(s);}
+    document.body.appendChild(s);
+  });
 }
 function finishSubmission(payload,isDup){
   ssSet("so_submitted",JSON.stringify(Object.assign({dup:isDup,ts:Date.now()},payload)));
