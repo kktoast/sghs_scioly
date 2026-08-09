@@ -81,7 +81,7 @@
 
   /* Tray */
   .tray{position:fixed;left:0;right:0;bottom:0;z-index:60;border-top:1px solid var(--line);
-    background:rgba(251,250,247,.94);backdrop-filter:blur(10px);box-shadow:0 -10px 30px -18px rgba(22,32,58,.4)}
+    background:rgba(251,250,247,.96);backdrop-filter:blur(10px);box-shadow:0 -10px 30px -18px rgba(22,32,58,.4)}
   .tray-bar{max-width:1080px;margin:0 auto;padding:12px 22px;display:flex;align-items:center;gap:14px}
   .tray-count{font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:1.05rem;display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;color:var(--ink)}
   .badge{background:var(--gold);color:#3a2b00;border-radius:8px;min-width:30px;text-align:center;padding:3px 8px;font-family:"IBM Plex Mono",monospace}
@@ -92,12 +92,22 @@
   .tray-actions .submit:hover{background:var(--gold-deep);color:#fff}
   .tray-actions button:disabled{opacity:.4;cursor:not-allowed}
   .tray-list{max-width:1080px;margin:0 auto;padding:0 22px;max-height:0;overflow:hidden;transition:max-height .28s ease}
-  .tray.open .tray-list{max-height:300px;overflow-y:auto;padding-bottom:16px}
-  .pick{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:.92rem}
-  .pick .pdot{width:10px;height:10px;border-radius:50%;background:var(--cc);flex:none}
-  .pick .pmeta{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-soft)}
-  .pick button{border:0;background:transparent;cursor:pointer;color:var(--ink-soft);font-size:1.1rem;line-height:1;padding:2px 6px;border-radius:6px}
-  .pick button:hover{background:var(--paper-2);color:var(--c-inq)}
+  .tray.open .tray-list{max-height:62vh;overflow-y:auto;padding-bottom:16px}
+  .tray-hint{font-size:.82rem;color:var(--ink-soft);padding:10px 0 4px}
+
+  .pick-block{border-bottom:1px solid var(--line);padding:12px 0}
+  .pick-head{display:flex;align-items:center;gap:9px;font-size:.98rem}
+  .pick-head .pdot{width:10px;height:10px;border-radius:50%;flex:none}
+  .pick-head b{font-weight:600}
+  .pick-head .limit{font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--ink-soft);background:var(--paper-2);padding:2px 7px;border-radius:6px}
+  .pick-head .rm{margin-left:auto;border:0;background:transparent;cursor:pointer;color:var(--ink-soft);font-size:1.15rem;line-height:1;padding:2px 7px;border-radius:6px}
+  .pick-head .rm:hover{background:var(--paper-2);color:var(--c-inq)}
+  .you{font-size:.85rem;color:var(--ink-soft);margin:6px 0 6px 19px}
+  .you b{color:var(--ink)}
+  .mates{margin:0 0 0 19px;display:flex;flex-direction:column;gap:6px}
+  .mates input{width:100%;max-width:340px;padding:8px 11px;border:1px solid var(--line);border-radius:9px;font:inherit;font-size:.86rem;color:var(--ink);background:#fff}
+  .mates input:focus{outline:2px solid var(--gold);outline-offset:1px;border-color:transparent}
+  .mates .matetext{font-size:.85rem;color:var(--ink)}
 
   /* Overlay (gate + confirmation) */
   .overlay{position:fixed;inset:0;z-index:100;background:rgba(22,32,58,.34);backdrop-filter:blur(3px);
@@ -107,21 +117,24 @@
     max-width:460px;width:100%;padding:30px 28px;max-height:90vh;overflow:auto}
   .sheet h2{font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:1.5rem;margin:0 0 6px;letter-spacing:-.01em}
   .sheet .sub{color:var(--ink-soft);font-size:.95rem;margin:0 0 20px}
-  .field{margin-bottom:15px}
+  .field{margin-bottom:8px}
   .field label{display:block;font-size:.82rem;font-weight:600;margin-bottom:6px;color:var(--ink)}
-  .field input,.field select{width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:10px;font:inherit;color:var(--ink);background:#fff}
-  .field input:focus,.field select:focus{outline:2px solid var(--gold);outline-offset:1px;border-color:transparent}
-  .form-err{color:var(--c-inq);font-size:.85rem;min-height:1.2em;margin:2px 0 12px}
+  .field input{width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:10px;font:inherit;color:var(--ink);background:#fff}
+  .field input:focus{outline:2px solid var(--gold);outline-offset:1px;border-color:transparent}
+  .namehelp{font-size:.82rem;color:var(--ink-soft);background:var(--paper-2);border-radius:9px;padding:9px 11px;margin:6px 0 14px}
+  .namehelp b{color:var(--ink)}
+  .form-err{color:var(--c-inq);font-size:.85rem;min-height:1.2em;margin:0 0 12px}
   .btn-primary{width:100%;font:inherit;font-weight:600;font-size:1rem;padding:12px;border-radius:11px;border:1px solid var(--gold-deep);
     background:var(--gold);color:#3a2b00;cursor:pointer}
   .btn-primary:hover{background:var(--gold-deep);color:#fff}
-  .btn-primary:disabled{opacity:.6;cursor:not-allowed}
   .done-badge{width:56px;height:56px;border-radius:50%;background:var(--c-life);color:#fff;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
   .done-badge.dup{background:var(--gold-deep)}
   .done-list{list-style:none;padding:0;margin:14px 0 0;border-top:1px solid var(--line)}
-  .done-list li{padding:7px 0;border-bottom:1px solid var(--line);font-size:.92rem;display:flex;align-items:center;gap:9px}
-  .done-list .pdot{width:9px;height:9px;border-radius:50%;flex:none}
-  .newform{margin-top:20px;font-size:.85rem;color:var(--ink-soft);text-align:center}
+  .done-list li{padding:9px 0;border-bottom:1px solid var(--line);font-size:.9rem}
+  .done-list .de{display:flex;align-items:center;gap:9px;font-weight:600}
+  .done-list .de .pdot{width:9px;height:9px;border-radius:50%;flex:none}
+  .done-list .dm{margin:3px 0 0 18px;color:var(--ink-soft);font-size:.85rem}
+  .newform{margin-top:16px;font-size:.85rem;color:var(--ink-soft);text-align:center}
   .newform button{font:inherit;background:none;border:0;color:var(--c-earth);cursor:pointer;text-decoration:underline;text-underline-offset:2px}
 
   .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--ink);color:#fff;
@@ -138,15 +151,6 @@
     .hero-inner{padding:34px 20px 24px}
   }
   @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto}}
-
-  #printArea{display:none}
-  @media print{
-    body>*{display:none!important}
-    #printArea{display:block!important;font-family:"IBM Plex Sans",sans-serif;color:#000;padding:20px}
-    #printArea h2{font-family:"Space Grotesk",sans-serif}
-    #printArea .pcat{margin-top:14px;font-weight:600;border-bottom:2px solid #000;padding-bottom:3px}
-    #printArea li{margin:5px 0}
-  }
 </style>
 </head>
 <body>
@@ -155,7 +159,7 @@
   <div class="hero-inner">
     <div class="eyebrow">Science Olympiad &middot; Division C</div>
     <h1>Pick the events <span class="swap">you</span> want to compete in.</h1>
-    <p class="lede">Enter your name, browse every Division C event, add the ones you're interested in, and submit your final list. You can submit once.</p>
+    <p class="lede">Enter your name, browse every Division C event, add the ones you want, and list any teammates for each. Submit your final list when you're done.</p>
     <div class="meta" id="meta"></div>
   </div>
 </header>
@@ -170,12 +174,12 @@
   </div>
 </div>
 
-<div class="wrap"><div class="idbar" id="idbar" hidden>Picking as <b id="idName"></b>, <span id="idGrade"></span> <button id="switchBtn">Not you? Start over</button></div></div>
+<div class="wrap"><div class="idbar" id="idbar" hidden>Picking as <b id="idName"></b> <button id="switchBtn">Not you? Start over</button></div></div>
 
 <main class="wrap" id="board"></main>
 
 <footer class="pagefoot">
-  Event names, categories, and rules belong to <a href="https://www.soinc.org" target="_blank" rel="noopener">Science Olympiad, Inc.</a> — this is an unofficial student helper for the Division C (high school) 2027 season. Descriptions and type tags are informal summaries; always check the official rules for each event.
+  Event names, categories, and rules belong to <a href="https://www.soinc.org" target="_blank" rel="noopener">Science Olympiad, Inc.</a> — this is an unofficial student helper for the Division C (high school) 2027 season. Team-size limits are from the current rules; always confirm against the official rule book for each event.
 </footer>
 
 <div class="tray" id="tray">
@@ -193,26 +197,17 @@
   <div class="tray-list" id="trayList"></div>
 </div>
 
-<!-- Overlay: name/grade gate + confirmation -->
+<!-- Overlay: name gate + confirmation -->
 <div class="overlay" id="overlay" hidden>
   <div class="sheet">
     <div id="gateView">
       <h2>Welcome! Let's get started</h2>
-      <p class="sub">Enter your name and grade, then browse and choose the events you're interested in.</p>
+      <p class="sub">Enter your name, then browse and choose the events you want to compete in.</p>
       <div class="field">
-        <label for="gName">Full name</label>
-        <input id="gName" type="text" autocomplete="off" placeholder="e.g. Jordan Lee">
+        <label for="gName">Your name</label>
+        <input id="gName" type="text" autocomplete="off" placeholder="e.g. Jordan L">
       </div>
-      <div class="field">
-        <label for="gGrade">Grade</label>
-        <select id="gGrade">
-          <option value="">Choose your grade…</option>
-          <option value="9">9th grade</option>
-          <option value="10">10th grade</option>
-          <option value="11">11th grade</option>
-          <option value="12">12th grade</option>
-        </select>
-      </div>
+      <div class="namehelp">Enter your <b>first name</b> and the <b>last letter of your last name</b>, both capitalized, with a space between — for example, <b>Jordan L</b> for Jordan Lee. Use the same style for teammates.</div>
       <div class="form-err" id="gErr"></div>
       <button class="btn-primary" id="gStart">Start browsing events</button>
     </div>
@@ -221,15 +216,17 @@
 </div>
 
 <div class="toast" id="toast"></div>
-<div id="printArea"></div>
 
 <script>
 /* ================= CONFIG ================= */
 /* Paste the Web App URL from your Google Apps Script deployment between the quotes. */
-const SUBMIT_URL = "https://script.google.com/a/macros/stargateschool.org/s/AKfycbxw5lEH8C0X4bLAQtt4-aN4frq3vwcwH9u7vZJDdXm48AQco3X4rBMM8Y4tJ0fMZnr_/exec";
+const SUBMIT_URL = "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
 function isConfigured(){ return SUBMIT_URL && !/PASTE_|_HERE/.test(SUBMIT_URL); }
 
-/* ================= Data — Division C, 2027 season (soinc.org) ================= */
+/* ================= Data — Division C, 2027 season (soinc.org) =================
+   max = the event's "A TEAM OF UP TO" limit (people per event, INCLUDING the
+   student). Most events are 2; Codebusters and Experimental Design are 3.
+   If your rule book differs, just change the number here. */
 const CATS=[
   {id:"life",  name:"Life & Social Science",        color:"var(--c-life)", hex:"#1F9E6A"},
   {id:"earth", name:"Earth & Space Science",        color:"var(--c-earth)",hex:"#2E74C4"},
@@ -243,49 +240,43 @@ const BASE="https://www.soinc.org/";
 const KIND_LABEL={build:"🔧 Build",lab:"🧪 Lab",study:"📚 Study",skills:"🧩 Puzzle"};
 
 const EVENTS=[
-  {n:"Anatomy and Physiology", cat:"life", kind:"study", slug:"anatomy-and-physiology-c", d:"Learn how the human body's systems work — and what happens when disease strikes them."},
-  {n:"Botany", cat:"life", kind:"study", slug:"botany-c", d:"Study plant structure, function, and classification across the major plant groups."},
-  {n:"Designer Genes", cat:"life", kind:"study", slug:"designer-genes-c", d:"Dig into molecular genetics — DNA, inheritance, and modern biotech tools."},
-  {n:"Disease Detectives", cat:"life", kind:"lab", slug:"disease-detectives-c", d:"Play epidemiologist: investigate outbreaks and figure out how illness spreads."},
-  {n:"Water Quality", cat:"life", kind:"lab", slug:"water-quality-c", d:"Explore freshwater and marine ecosystems and what keeps water healthy."},
+  {n:"Anatomy and Physiology", cat:"life", kind:"study", max:2, slug:"anatomy-and-physiology-c", d:"Learn how the human body's systems work — and what happens when disease strikes them."},
+  {n:"Botany", cat:"life", kind:"study", max:2, slug:"botany-c", d:"Study plant structure, function, and classification across the major plant groups."},
+  {n:"Designer Genes", cat:"life", kind:"study", max:2, slug:"designer-genes-c", d:"Dig into molecular genetics — DNA, inheritance, and modern biotech tools."},
+  {n:"Disease Detectives", cat:"life", kind:"lab", max:2, slug:"disease-detectives-c", d:"Play epidemiologist: investigate outbreaks and figure out how illness spreads."},
+  {n:"Water Quality", cat:"life", kind:"lab", max:2, slug:"water-quality-c", d:"Explore freshwater and marine ecosystems and what keeps water healthy."},
 
-  {n:"Astronomy", cat:"earth", kind:"study", slug:"astronomy-c", d:"Study stars, galaxies, and stellar evolution — plus the physics behind them."},
-  {n:"Dynamic Planet", cat:"earth", kind:"study", slug:"dynamic-planet-c", d:"Learn Earth's physical processes; the yearly focus rotates (oceans, glaciers, tectonics…)."},
-  {n:"Remote Sensing", cat:"earth", kind:"study", slug:"remote-sensing-c", d:"Read satellite and sensor data to track Earth's changing surface and climate."},
-  {n:"Rocks and Minerals", cat:"earth", kind:"study", slug:"rocks-and-minerals-c", d:"Identify specimens and learn how rocks and minerals form."},
+  {n:"Astronomy", cat:"earth", kind:"study", max:2, slug:"astronomy-c", d:"Study stars, galaxies, and stellar evolution — plus the physics behind them."},
+  {n:"Dynamic Planet", cat:"earth", kind:"study", max:2, slug:"dynamic-planet-c", d:"Learn Earth's physical processes; the yearly focus rotates (oceans, glaciers, tectonics…)."},
+  {n:"Remote Sensing", cat:"earth", kind:"study", max:2, slug:"remote-sensing-c", d:"Read satellite and sensor data to track Earth's changing surface and climate."},
+  {n:"Rocks and Minerals", cat:"earth", kind:"study", max:2, slug:"rocks-and-minerals-c", d:"Identify specimens and learn how rocks and minerals form."},
 
-  {n:"Chemistry Lab", cat:"phys", kind:"lab", slug:"chemistry-lab-c-0", d:"Run real lab work in areas like reactions, stoichiometry, and equilibrium."},
-  {n:"Circuit Lab", cat:"phys", kind:"lab", slug:"circuit-lab-c", d:"Build and analyze electrical circuits and learn the physics of electricity."},
-  {n:"Forensics", cat:"phys", kind:"lab", slug:"forensics-c", d:"Use chemistry and analysis to solve a mock crime from physical evidence."},
-  {n:"Hovercraft", cat:"phys", kind:"build", slug:"hovercraft-c", d:"Build a self-propelled hovercraft and answer physics questions on motion."},
-  {n:"Protein Modeling", cat:"phys", kind:"build", slug:"protein-modeling-c", d:"Build physical and computer models of proteins to study how they're shaped."},
-  {n:"Thermodynamics", cat:"phys", kind:"build", slug:"thermodynamics-c", d:"Study heat and energy, and build an insulated device to control temperature."},
+  {n:"Chemistry Lab", cat:"phys", kind:"lab", max:2, slug:"chemistry-lab-c-0", d:"Run real lab work in areas like reactions, stoichiometry, and equilibrium."},
+  {n:"Circuit Lab", cat:"phys", kind:"lab", max:2, slug:"circuit-lab-c", d:"Build and analyze electrical circuits and learn the physics of electricity."},
+  {n:"Forensics", cat:"phys", kind:"lab", max:2, slug:"forensics-c", d:"Use chemistry and analysis to solve a mock crime from physical evidence."},
+  {n:"Hovercraft", cat:"phys", kind:"build", max:2, slug:"hovercraft-c", d:"Build a self-propelled hovercraft and answer physics questions on motion."},
+  {n:"Protein Modeling", cat:"phys", kind:"build", max:2, slug:"protein-modeling-c", d:"Build physical and computer models of proteins to study how they're shaped."},
+  {n:"Thermodynamics", cat:"phys", kind:"build", max:2, slug:"thermodynamics-c", d:"Study heat and energy, and build an insulated device to control temperature."},
 
-  {n:"Boomilever", cat:"tech", kind:"build", slug:"boomilever-c", d:"Design a featherweight cantilever structure that holds the most weight."},
-  {n:"Electric Vehicle", cat:"tech", kind:"build", slug:"electric-vehicle-c", d:"Build a battery-powered vehicle that travels a set distance accurately."},
-  {n:"Mission Possible", cat:"tech", kind:"build", slug:"mission-possible-c", d:"Engineer a Rube Goldberg–style chain of tasks that runs start to finish on cue."},
-  {n:"Wright Stuff", cat:"tech", kind:"build", slug:"wright-stuff-c", d:"Build a rubber-powered indoor airplane that stays aloft the longest."},
+  {n:"Boomilever", cat:"tech", kind:"build", max:2, slug:"boomilever-c", d:"Design a featherweight cantilever structure that holds the most weight."},
+  {n:"Electric Vehicle", cat:"tech", kind:"build", max:2, slug:"electric-vehicle-c", d:"Build a battery-powered vehicle that travels a set distance accurately."},
+  {n:"Mission Possible", cat:"tech", kind:"build", max:2, slug:"mission-possible-c", d:"Engineer a Rube Goldberg–style chain of tasks that runs start to finish on cue."},
+  {n:"Wright Stuff", cat:"tech", kind:"build", max:2, slug:"wright-stuff-c", d:"Build a rubber-powered indoor airplane that stays aloft the longest."},
 
-  {n:"Codebusters", cat:"inq", kind:"skills", slug:"codebusters-c", d:"Crack coded messages by hand using classic ciphers — against the clock."},
-  {n:"Engineering CAD", cat:"inq", kind:"build", slug:"engineering-cad-c", d:"Use computer-aided design software to model parts and solve design prompts."},
-  {n:"Experimental Design", cat:"inq", kind:"lab", slug:"experimental-design-c", d:"Design, run, and write up a full experiment on the spot from given materials."},
-  {n:"Ping-Pong Parachute", cat:"inq", kind:"build", slug:"ping-pong-parachute-c", d:"Launch a rocket carrying a ping-pong ball that parachutes gently back down."},
+  {n:"Codebusters", cat:"inq", kind:"skills", max:3, slug:"codebusters-c", d:"Crack coded messages by hand using classic ciphers — against the clock."},
+  {n:"Engineering CAD", cat:"inq", kind:"build", max:2, slug:"engineering-cad-c", d:"Use computer-aided design software to model parts and solve design prompts."},
+  {n:"Experimental Design", cat:"inq", kind:"lab", max:3, slug:"experimental-design-c", d:"Design, run, and write up a full experiment on the spot from given materials."},
+  {n:"Ping-Pong Parachute", cat:"inq", kind:"build", max:2, slug:"ping-pong-parachute-c", d:"Launch a rocket carrying a ping-pong ball that parachutes gently back down."},
 ];
 EVENTS.forEach(e=> e.id = e.n.toLowerCase().replace(/[^a-z0-9]+/g,"-"));
+const byId={}; EVENTS.forEach(e=>byId[e.id]=e);
 
-/* ================= Session storage (per-tab, resets on close) ================= */
-function ssGet(k){try{return sessionStorage.getItem(k);}catch(e){return null;}}
-function ssSet(k,v){try{sessionStorage.setItem(k,v);}catch(e){}}
-function ssDel(k){try{sessionStorage.removeItem(k);}catch(e){}}
+/* ================= State (in-memory only; nothing saved on the device) ================= */
+const state={cat:"all",q:"",name:null,picked:new Set(),partners:{},submitting:false,locked:false};
 
-/* ================= State ================= */
-const state={cat:"all",q:"",picked:new Set(),name:null,grade:null,submitting:false,locked:false};
-(function restore(){
-  try{const id=JSON.parse(ssGet("so_identity")||"null");if(id){state.name=id.name;state.grade=id.grade;}}catch(e){}
-  try{const p=JSON.parse(ssGet("so_picks")||"null");if(Array.isArray(p))p.forEach(x=>state.picked.add(x));}catch(e){}
-})();
-function persistPicks(){ssSet("so_picks",JSON.stringify([...state.picked]));}
-function persistIdentity(){ssSet("so_identity",JSON.stringify({name:state.name,grade:state.grade}));}
+/* ================= Name format helper ================= */
+// Capitalized first name, a space, then a single capital letter. e.g. "Jordan L"
+function validName(s){ return /^[A-Z][A-Za-z.'\-]*\s+[A-Z]$/.test(String(s||"").trim()); }
 
 /* ================= Controls ================= */
 document.getElementById("meta").textContent = EVENTS.length + " events · " + CATS.length + " disciplines · High school";
@@ -331,18 +322,21 @@ function card(e){
   el.className="card"+(on?" on":"");el.style.setProperty("--cc",CATVAR[e.cat]);
   let action;
   if(state.locked){
-    action = on
-      ? '<span class="add on" style="cursor:default"><svg class="chk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Selected</span>'
-      : '';
+    action = on ? '<span class="add on" style="cursor:default"><svg class="chk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Selected</span>' : '';
   } else {
     action = `<button class="add${on?" on":""}" aria-pressed="${on}">${on?'<svg class="chk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Added':'+ Add'}</button>`;
   }
-  el.innerHTML=`<h3>${e.n}</h3><span class="tag">${KIND_LABEL[e.kind]}</span><p>${e.d}</p>
+  el.innerHTML=`<h3>${e.n}</h3><span class="tag">${KIND_LABEL[e.kind]} · Team of up to ${e.max}</span><p>${e.d}</p>
     <div class="foot"><a class="rules-link" href="${BASE}${e.slug}" target="_blank" rel="noopener">Official rules ↗</a>${action}</div>`;
   if(!state.locked){const b=el.querySelector("button.add");if(b)b.onclick=()=>toggle(e.id);}
   return el;
 }
-function toggle(id){if(state.locked)return;if(state.picked.has(id))state.picked.delete(id);else state.picked.add(id);persistPicks();render();}
+function toggle(id){
+  if(state.locked)return;
+  if(state.picked.has(id)){state.picked.delete(id);delete state.partners[id];}
+  else{state.picked.add(id);state.partners[id]=[];}
+  render();
+}
 
 /* ================= Tray ================= */
 const badge=document.getElementById("badge"),trayList=document.getElementById("trayList"),tray=document.getElementById("tray");
@@ -357,47 +351,76 @@ function updateTray(){
   btnClear.disabled=!picks.length;
   btnSubmit.disabled=!picks.length||state.submitting;
   document.querySelector(".tray-count").firstChild.textContent=state.locked?"Your submitted lineup ":"My lineup ";
-  trayList.innerHTML=picks.length?"":`<div style="padding:14px 0;color:var(--ink-soft)">No events yet — hit <b>+ Add</b> on any card to start your lineup.</div>`;
+  trayList.innerHTML="";
+  if(!picks.length){trayList.innerHTML=`<div style="padding:14px 0;color:var(--ink-soft)">No events yet — hit <b>+ Add</b> on any card to start your lineup.</div>`;return;}
+  if(!state.locked)trayList.insertAdjacentHTML("beforeend",`<div class="tray-hint">Add teammates for each event below (optional). Use the name format like <b>Alex K</b>.</div>`);
   picks.forEach(e=>{
-    const row=document.createElement("div");row.className="pick";
-    const rm=state.locked?"":`<button aria-label="Remove ${e.n}">×</button>`;
-    row.innerHTML=`<span class="pdot" style="--cc:${CATVAR[e.cat]}"></span><span>${e.n}</span><span class="pmeta">${KIND_LABEL[e.kind]}</span>${rm}`;
-    if(!state.locked)row.querySelector("button").onclick=()=>toggle(e.id);
-    trayList.appendChild(row);
+    const block=document.createElement("div");block.className="pick-block";
+    const partners=state.partners[e.id]||[];
+    let matesHtml="";
+    if(state.locked){
+      matesHtml = partners.filter(Boolean).length
+        ? `<div class="mates"><div class="matetext">Teammates: ${partners.filter(Boolean).join(", ")}</div></div>`
+        : "";
+    } else {
+      let inputs="";
+      for(let i=0;i<e.max-1;i++){
+        inputs+=`<input type="text" data-ev="${e.id}" data-i="${i}" placeholder="Teammate ${i+1} (optional) — e.g., Alex K" value="${(partners[i]||"").replace(/"/g,'&quot;')}">`;
+      }
+      matesHtml=`<div class="mates">${inputs}</div>`;
+    }
+    block.innerHTML=`<div class="pick-head"><span class="pdot" style="background:${CATHEX[e.cat]}"></span><b>${e.n}</b>
+      <span class="limit">up to ${e.max}</span>${state.locked?"":'<button class="rm" aria-label="Remove '+e.n+'">×</button>'}</div>
+      <div class="you">You: <b>${state.name||""}</b></div>${matesHtml}`;
+    if(!state.locked){
+      block.querySelector(".rm").onclick=()=>toggle(e.id);
+      block.querySelectorAll(".mates input").forEach(inp=>{
+        inp.addEventListener("input",()=>{
+          const id=inp.dataset.ev,i=+inp.dataset.i;
+          if(!state.partners[id])state.partners[id]=[];
+          state.partners[id][i]=inp.value;
+        });
+      });
+    }
+    trayList.appendChild(block);
   });
 }
-function listText(){let out=`Science Olympiad events — ${state.name||""} (Grade ${state.grade||"?"})\n`;CATS.forEach(c=>{const g=pickedEvents().filter(e=>e.cat===c.id);if(g.length)out+="\n"+c.name+"\n"+g.map(e=>"  • "+e.n).join("\n")+"\n";});return out;}
+function groupsForSubmit(){
+  return pickedEvents().map(e=>{
+    const partners=(state.partners[e.id]||[]).map(s=>(s||"").trim()).filter(Boolean);
+    return {event:e.n, members:[state.name].concat(partners)};
+  });
+}
+function listText(){
+  let out=`Science Olympiad events — ${state.name||""}\n`;
+  groupsForSubmit().forEach(g=>{out+="\n"+g.event+": "+g.members.join(", ");});
+  return out+"\n";
+}
 document.getElementById("btnCopy").onclick=()=>{if(state.picked.size)copy(listText(),"Event list copied");};
-document.getElementById("btnClear").onclick=()=>{if(state.picked.size&&confirm("Clear all events from your lineup?")){state.picked.clear();persistPicks();render();}};
+document.getElementById("btnClear").onclick=()=>{if(state.picked.size&&confirm("Clear all events from your lineup?")){state.picked.clear();state.partners={};render();}};
 
-/* ================= Gate (name + grade) ================= */
+/* ================= Gate (name) ================= */
 const overlay=document.getElementById("overlay"),gateView=document.getElementById("gateView"),doneView=document.getElementById("doneView");
 const idbar=document.getElementById("idbar");
 function showGate(){gateView.hidden=false;doneView.hidden=true;overlay.hidden=false;setTimeout(()=>document.getElementById("gName").focus(),60);}
 function hideOverlay(){overlay.hidden=true;}
 function showIdBar(){
   document.getElementById("idName").textContent=state.name;
-  document.getElementById("idGrade").textContent="Grade "+state.grade;
   idbar.firstChild.textContent=state.locked?"Submitted as ":"Picking as ";
   document.getElementById("switchBtn").textContent=state.locked?"Different student? Start over":"Not you? Start over";
   idbar.hidden=false;
 }
 document.getElementById("gStart").onclick=()=>{
   const name=document.getElementById("gName").value.trim();
-  const grade=document.getElementById("gGrade").value;
   const err=document.getElementById("gErr");
-  if(name.length<2){err.textContent="Please enter your full name.";return;}
-  if(!grade){err.textContent="Please choose your grade.";return;}
-  err.textContent="";
-  state.name=name;state.grade=grade;persistIdentity();
-  hideOverlay();showIdBar();
+  if(!validName(name)){err.textContent="Use the format: capital first name, a space, then the capital last letter of your last name — e.g., Jordan L.";return;}
+  err.textContent="";state.name=name;hideOverlay();showIdBar();
 };
-document.getElementById("gName").addEventListener("keydown",e=>{if(e.key==="Enter")document.getElementById("gGrade").focus();});
+document.getElementById("gName").addEventListener("keydown",e=>{if(e.key==="Enter")document.getElementById("gStart").click();});
 document.getElementById("switchBtn").onclick=()=>resetAll();
 function resetAll(){
-  state.picked.clear();state.name=null;state.grade=null;state.cat="all";state.q="";
-  ssDel("so_picks");ssDel("so_identity");ssDel("so_submitted");
-  document.getElementById("gName").value="";document.getElementById("gGrade").value="";document.getElementById("gErr").textContent="";
+  state.picked.clear();state.partners={};state.name=null;state.cat="all";state.q="";state.locked=false;state.submitting=false;
+  document.getElementById("gName").value="";document.getElementById("gErr").textContent="";document.getElementById("search").value="";
   idbar.hidden=true;render();showGate();
 }
 
@@ -407,28 +430,31 @@ document.getElementById("btnSubmit").onclick=submitSelection;
 function submitSelection(){
   if(!state.picked.size)return;
   if(!isConfigured()){toast("Submissions aren't set up yet — the Apps Script URL is missing.");return;}
-  const events=pickedEvents().map(e=>e.n);
-  if(!confirm(`Submit your final selection of ${events.length} event${events.length>1?"s":""}? You won't be able to change it afterward.`))return;
+  const groups=groupsForSubmit();
+  // Validate every teammate name uses the required format.
+  for(const g of groups){
+    for(const m of g.members){
+      if(!validName(m)){toast("Check teammate names use the format like ‘Alex K’ (capital first name, space, capital last letter).");return;}
+    }
+  }
+  if(!confirm(`Submit your final selection of ${groups.length} event${groups.length>1?"s":""}? You won't be able to change it afterward.`))return;
   setSubmitting(true);
-  const payload={name:state.name,grade:state.grade,events:events,count:events.length};
-  const params=new URLSearchParams({name:state.name,grade:state.grade,events:events.join("||")});
+  const sel=groups.map(g=>g.event+"::"+g.members.join(",")).join("~~");
+  const params=new URLSearchParams({name:state.name,sel:sel});
   const url=SUBMIT_URL+(SUBMIT_URL.indexOf("?")>-1?"&":"?")+params.toString();
   jsonp(url).then(data=>{
-    if(data&&data.status==="ok"){finishSubmission(payload,false);}
-    else if(data&&data.status==="duplicate"){finishSubmission(payload,true);}
+    if(data&&data.status==="ok"){finishSubmission(groups,false,false);}
+    else if(data&&data.status==="duplicate"){finishSubmission(groups,true,false);}
     else if(data&&data.status==="error"){setSubmitting(false);toast(data.message||"Submission error.");}
     else{throw new Error("Unexpected response");}
   }).catch(err=>{
-    // Some school Google accounts let the data save but block the page from
-    // reading the reply. The row is still written and duplicates are still
-    // blocked on the sheet, so treat a sent-but-unconfirmed submission as done
-    // rather than leaving the button spinning forever.
-    console.warn("No readable reply from server; treating as submitted.",err);
-    finishSubmission(payload,false,true);
+    // Some school Google accounts save the data but block the page from reading
+    // the reply. The row is still written and duplicates are still blocked on the
+    // sheet, so treat a sent-but-unconfirmed submission as done rather than hang.
+    console.warn("No readable reply; treating as submitted.",err);
+    finishSubmission(groups,false,true);
   });
 }
-/* Loads the Apps Script response via a <script> tag (JSONP) so the browser's
-   cross-origin rules never block reading the reply. */
 function jsonp(url){
   return new Promise((resolve,reject)=>{
     const cb="so_cb_"+Math.random().toString(36).slice(2);
@@ -442,53 +468,40 @@ function jsonp(url){
     document.body.appendChild(s);
   });
 }
-function finishSubmission(payload,isDup,unconfirmed){
-  ssSet("so_submitted",JSON.stringify(Object.assign({dup:isDup,unconfirmed:!!unconfirmed,ts:Date.now()},payload)));
-  showDone(payload,isDup,unconfirmed);
-}
-function showDone(payload,isDup,unconfirmed){
-  const items=EVENTS.filter(e=>payload.events.includes(e.n))
-    .sort((a,b)=>CATS.findIndex(c=>c.id===a.cat)-CATS.findIndex(c=>c.id===b.cat));
-  const list=items.map(e=>`<li><span class="pdot" style="background:${CATHEX[e.cat]}"></span>${e.n}</li>`).join("");
+function finishSubmission(groups,isDup,unconfirmed){ showDone(groups,isDup,unconfirmed); }
+function showDone(groups,isDup,unconfirmed){
+  const rows=groups.map(g=>{
+    const ev=EVENTS.find(x=>x.n===g.event);
+    const dot=ev?CATHEX[ev.cat]:"#999";
+    const mates=g.members.length>1?`<div class="dm">${g.members.join(", ")}</div>`:`<div class="dm">${g.members[0]} (solo)</div>`;
+    return `<li><div class="de"><span class="pdot" style="background:${dot}"></span>${g.event}</div>${mates}</li>`;
+  }).join("");
   let sub;
-  if(isDup) sub=`Our records already show a submission for <b>${payload.name}</b>, Grade ${payload.grade}. Each student can submit once. If this looks wrong, talk to your coach.`;
-  else if(unconfirmed) sub=`Your selection was sent, <b>${payload.name}</b>. If this is your first submission it's saved — if you've submitted before, only your first one counts. Check with your coach if you're unsure.`;
-  else sub=`Thanks, <b>${payload.name}</b>. Your ${payload.events.length} event${payload.events.length>1?"s have":" has"} been recorded for Grade ${payload.grade}.`;
+  if(isDup) sub=`Our records already show a submission for <b>${state.name}</b>. Each student can submit once. If this looks wrong, talk to your coach.`;
+  else if(unconfirmed) sub=`Your selection was sent, <b>${state.name}</b>. If this is your first submission it's saved — only your first one counts. Check with your coach if you're unsure.`;
+  else sub=`Thanks, <b>${state.name}</b>. Your ${groups.length} event${groups.length>1?"s have":" has"} been recorded.`;
   doneView.innerHTML=`
     <div class="done-badge${isDup?" dup":""}">${isDup
       ?'<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="9"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>'
       :'<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M20 6 9 17l-5-5"/></svg>'}</div>
     <h2>${isDup?"You've already submitted":"Your selection is in!"}</h2>
     <p class="sub">${sub}</p>
-    <ul class="done-list">${list}</ul>
+    <ul class="done-list">${rows}</ul>
     <button class="btn-primary" id="browseBtn" style="margin-top:20px">Browse events</button>
     <div class="newform">Sharing this computer? <button id="newFormBtn">Start a new form for the next student</button></div>`;
   gateView.hidden=true;doneView.hidden=false;overlay.hidden=false;
-  document.getElementById("browseBtn").onclick=()=>enterViewOnly(payload);
+  document.getElementById("browseBtn").onclick=()=>{state.locked=true;state.submitting=false;state.cat="all";state.q="";document.getElementById("search").value="";hideOverlay();showIdBar();render();};
   document.getElementById("newFormBtn").onclick=()=>resetAll();
-}
-function enterViewOnly(payload){
-  state.locked=true;
-  state.name=payload.name;state.grade=payload.grade;
-  state.picked=new Set(EVENTS.filter(e=>payload.events.includes(e.n)).map(e=>e.id));
-  state.cat="all";state.q="";state.submitting=false;
-  document.getElementById("search").value="";
-  hideOverlay();showIdBar();render();
 }
 
 /* ================= Utilities ================= */
 function copy(text,msg){const done=()=>toast(msg);if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(text).then(done).catch(()=>fallbackCopy(text,done));else fallbackCopy(text,done);}
 function fallbackCopy(text,cb){const ta=document.createElement("textarea");ta.value=text;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");cb();}catch(e){toast("Copy failed — select manually");}document.body.removeChild(ta);}
-let toastTimer;function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove("show"),2400);}
+let toastTimer;function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove("show"),2600);}
 
 /* ================= Init ================= */
 render();
-(function init(){
-  let submitted=null;try{submitted=JSON.parse(ssGet("so_submitted")||"null");}catch(e){}
-  if(submitted){showDone(submitted,submitted.dup,submitted.unconfirmed);return;}
-  if(state.name&&state.grade){showIdBar();hideOverlay();}
-  else{showGate();}
-})();
+showGate();
 </script>
 </body>
 </html>
