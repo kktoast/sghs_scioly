@@ -446,18 +446,20 @@ function finishSubmission(payload,isDup,unconfirmed){
   ssSet("so_submitted",JSON.stringify(Object.assign({dup:isDup,unconfirmed:!!unconfirmed,ts:Date.now()},payload)));
   showDone(payload,isDup,unconfirmed);
 }
-function showDone(payload,isDup){
+function showDone(payload,isDup,unconfirmed){
   const items=EVENTS.filter(e=>payload.events.includes(e.n))
     .sort((a,b)=>CATS.findIndex(c=>c.id===a.cat)-CATS.findIndex(c=>c.id===b.cat));
   const list=items.map(e=>`<li><span class="pdot" style="background:${CATHEX[e.cat]}"></span>${e.n}</li>`).join("");
+  let sub;
+  if(isDup) sub=`Our records already show a submission for <b>${payload.name}</b>, Grade ${payload.grade}. Each student can submit once. If this looks wrong, talk to your coach.`;
+  else if(unconfirmed) sub=`Your selection was sent, <b>${payload.name}</b>. If this is your first submission it's saved — if you've submitted before, only your first one counts. Check with your coach if you're unsure.`;
+  else sub=`Thanks, <b>${payload.name}</b>. Your ${payload.events.length} event${payload.events.length>1?"s have":" has"} been recorded for Grade ${payload.grade}.`;
   doneView.innerHTML=`
     <div class="done-badge${isDup?" dup":""}">${isDup
       ?'<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="9"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>'
       :'<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M20 6 9 17l-5-5"/></svg>'}</div>
     <h2>${isDup?"You've already submitted":"Your selection is in!"}</h2>
-    <p class="sub">${isDup
-      ?`Our records already show a submission for <b>${payload.name}</b>, Grade ${payload.grade}. Each student can submit once. If this looks wrong, talk to your coach.`
-      :`Thanks, <b>${payload.name}</b>. Your ${payload.events.length} event${payload.events.length>1?"s have":" has"} been recorded for Grade ${payload.grade}.`}</p>
+    <p class="sub">${sub}</p>
     <ul class="done-list">${list}</ul>
     <button class="btn-primary" id="browseBtn" style="margin-top:20px">Browse events</button>
     <div class="newform">Sharing this computer? <button id="newFormBtn">Start a new form for the next student</button></div>`;
@@ -483,7 +485,7 @@ let toastTimer;function toast(msg){const t=document.getElementById("toast");t.te
 render();
 (function init(){
   let submitted=null;try{submitted=JSON.parse(ssGet("so_submitted")||"null");}catch(e){}
-  if(submitted){showDone(submitted,submitted.dup);return;}
+  if(submitted){showDone(submitted,submitted.dup,submitted.unconfirmed);return;}
   if(state.name&&state.grade){showIdBar();hideOverlay();}
   else{showGate();}
 })();
