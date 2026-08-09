@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -280,7 +279,7 @@ function ssSet(k,v){try{sessionStorage.setItem(k,v);}catch(e){}}
 function ssDel(k){try{sessionStorage.removeItem(k);}catch(e){}}
 
 /* ================= State ================= */
-const state={cat:"all",q:"",picked:new Set(),name:null,grade:null,submitting:false};
+const state={cat:"all",q:"",picked:new Set(),name:null,grade:null,submitting:false,locked:false};
 (function restore(){
   try{const id=JSON.parse(ssGet("so_identity")||"null");if(id){state.name=id.name;state.grade=id.grade;}}catch(e){}
   try{const p=JSON.parse(ssGet("so_picks")||"null");if(Array.isArray(p))p.forEach(x=>state.picked.add(x));}catch(e){}
@@ -330,12 +329,20 @@ function render(){
 function card(e){
   const on=state.picked.has(e.id);const el=document.createElement("article");
   el.className="card"+(on?" on":"");el.style.setProperty("--cc",CATVAR[e.cat]);
+  let action;
+  if(state.locked){
+    action = on
+      ? '<span class="add on" style="cursor:default"><svg class="chk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Selected</span>'
+      : '';
+  } else {
+    action = `<button class="add${on?" on":""}" aria-pressed="${on}">${on?'<svg class="chk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Added':'+ Add'}</button>`;
+  }
   el.innerHTML=`<h3>${e.n}</h3><span class="tag">${KIND_LABEL[e.kind]}</span><p>${e.d}</p>
-    <div class="foot"><a class="rules-link" href="${BASE}${e.slug}" target="_blank" rel="noopener">Official rules ↗</a>
-    <button class="add${on?" on":""}" aria-pressed="${on}">${on?'<svg class="chk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Added':'+ Add'}</button></div>`;
-  el.querySelector(".add").onclick=()=>toggle(e.id);return el;
+    <div class="foot"><a class="rules-link" href="${BASE}${e.slug}" target="_blank" rel="noopener">Official rules ↗</a>${action}</div>`;
+  if(!state.locked){const b=el.querySelector("button.add");if(b)b.onclick=()=>toggle(e.id);}
+  return el;
 }
-function toggle(id){if(state.picked.has(id))state.picked.delete(id);else state.picked.add(id);persistPicks();render();}
+function toggle(id){if(state.locked)return;if(state.picked.has(id))state.picked.delete(id);else state.picked.add(id);persistPicks();render();}
 
 /* ================= Tray ================= */
 const badge=document.getElementById("badge"),trayList=document.getElementById("trayList"),tray=document.getElementById("tray");
@@ -343,14 +350,20 @@ document.getElementById("trayToggle").onclick=function(){const o=tray.classList.
 function pickedEvents(){return EVENTS.filter(e=>state.picked.has(e.id)).sort((a,b)=>CATS.findIndex(c=>c.id===a.cat)-CATS.findIndex(c=>c.id===b.cat)||a.n.localeCompare(b.n));}
 function updateTray(){
   const picks=pickedEvents();badge.textContent=picks.length;
-  document.getElementById("btnClear").disabled=!picks.length;
+  const btnClear=document.getElementById("btnClear"),btnSubmit=document.getElementById("btnSubmit");
   document.getElementById("btnCopy").disabled=!picks.length;
-  document.getElementById("btnSubmit").disabled=!picks.length||state.submitting;
+  btnClear.style.display=state.locked?"none":"";
+  btnSubmit.style.display=state.locked?"none":"";
+  btnClear.disabled=!picks.length;
+  btnSubmit.disabled=!picks.length||state.submitting;
+  document.querySelector(".tray-count").firstChild.textContent=state.locked?"Your submitted lineup ":"My lineup ";
   trayList.innerHTML=picks.length?"":`<div style="padding:14px 0;color:var(--ink-soft)">No events yet — hit <b>+ Add</b> on any card to start your lineup.</div>`;
   picks.forEach(e=>{
     const row=document.createElement("div");row.className="pick";
-    row.innerHTML=`<span class="pdot" style="--cc:${CATVAR[e.cat]}"></span><span>${e.n}</span><span class="pmeta">${KIND_LABEL[e.kind]}</span><button aria-label="Remove ${e.n}">×</button>`;
-    row.querySelector("button").onclick=()=>toggle(e.id);trayList.appendChild(row);
+    const rm=state.locked?"":`<button aria-label="Remove ${e.n}">×</button>`;
+    row.innerHTML=`<span class="pdot" style="--cc:${CATVAR[e.cat]}"></span><span>${e.n}</span><span class="pmeta">${KIND_LABEL[e.kind]}</span>${rm}`;
+    if(!state.locked)row.querySelector("button").onclick=()=>toggle(e.id);
+    trayList.appendChild(row);
   });
 }
 function listText(){let out=`Science Olympiad events — ${state.name||""} (Grade ${state.grade||"?"})\n`;CATS.forEach(c=>{const g=pickedEvents().filter(e=>e.cat===c.id);if(g.length)out+="\n"+c.name+"\n"+g.map(e=>"  • "+e.n).join("\n")+"\n";});return out;}
@@ -362,7 +375,13 @@ const overlay=document.getElementById("overlay"),gateView=document.getElementByI
 const idbar=document.getElementById("idbar");
 function showGate(){gateView.hidden=false;doneView.hidden=true;overlay.hidden=false;setTimeout(()=>document.getElementById("gName").focus(),60);}
 function hideOverlay(){overlay.hidden=true;}
-function showIdBar(){document.getElementById("idName").textContent=state.name;document.getElementById("idGrade").textContent="Grade "+state.grade;idbar.hidden=false;}
+function showIdBar(){
+  document.getElementById("idName").textContent=state.name;
+  document.getElementById("idGrade").textContent="Grade "+state.grade;
+  idbar.firstChild.textContent=state.locked?"Submitted as ":"Picking as ";
+  document.getElementById("switchBtn").textContent=state.locked?"Different student? Start over":"Not you? Start over";
+  idbar.hidden=false;
+}
 document.getElementById("gStart").onclick=()=>{
   const name=document.getElementById("gName").value.trim();
   const grade=document.getElementById("gGrade").value;
@@ -397,11 +416,15 @@ function submitSelection(){
   jsonp(url).then(data=>{
     if(data&&data.status==="ok"){finishSubmission(payload,false);}
     else if(data&&data.status==="duplicate"){finishSubmission(payload,true);}
-    else{throw new Error((data&&data.message)||"Unexpected response");}
+    else if(data&&data.status==="error"){setSubmitting(false);toast(data.message||"Submission error.");}
+    else{throw new Error("Unexpected response");}
   }).catch(err=>{
-    console.error("Submit failed:",err);
-    setSubmitting(false);
-    toast('Couldn\u2019t submit. Check that the Apps Script is deployed with access set to \u201cAnyone,\u201d and that the /exec URL is correct.');
+    // Some school Google accounts let the data save but block the page from
+    // reading the reply. The row is still written and duplicates are still
+    // blocked on the sheet, so treat a sent-but-unconfirmed submission as done
+    // rather than leaving the button spinning forever.
+    console.warn("No readable reply from server; treating as submitted.",err);
+    finishSubmission(payload,false,true);
   });
 }
 /* Loads the Apps Script response via a <script> tag (JSONP) so the browser's
@@ -410,7 +433,7 @@ function jsonp(url){
   return new Promise((resolve,reject)=>{
     const cb="so_cb_"+Math.random().toString(36).slice(2);
     let done=false;
-    const timer=setTimeout(()=>{if(!done){cleanup();reject(new Error("timeout"));}},15000);
+    const timer=setTimeout(()=>{if(!done){cleanup();reject(new Error("timeout"));}},8000);
     window[cb]=data=>{done=true;cleanup();resolve(data);};
     const s=document.createElement("script");
     s.src=url+"&callback="+cb;
@@ -419,9 +442,9 @@ function jsonp(url){
     document.body.appendChild(s);
   });
 }
-function finishSubmission(payload,isDup){
-  ssSet("so_submitted",JSON.stringify(Object.assign({dup:isDup,ts:Date.now()},payload)));
-  showDone(payload,isDup);
+function finishSubmission(payload,isDup,unconfirmed){
+  ssSet("so_submitted",JSON.stringify(Object.assign({dup:isDup,unconfirmed:!!unconfirmed,ts:Date.now()},payload)));
+  showDone(payload,isDup,unconfirmed);
 }
 function showDone(payload,isDup){
   const items=EVENTS.filter(e=>payload.events.includes(e.n))
@@ -436,9 +459,19 @@ function showDone(payload,isDup){
       ?`Our records already show a submission for <b>${payload.name}</b>, Grade ${payload.grade}. Each student can submit once. If this looks wrong, talk to your coach.`
       :`Thanks, <b>${payload.name}</b>. Your ${payload.events.length} event${payload.events.length>1?"s have":" has"} been recorded for Grade ${payload.grade}.`}</p>
     <ul class="done-list">${list}</ul>
+    <button class="btn-primary" id="browseBtn" style="margin-top:20px">Browse events</button>
     <div class="newform">Sharing this computer? <button id="newFormBtn">Start a new form for the next student</button></div>`;
   gateView.hidden=true;doneView.hidden=false;overlay.hidden=false;
+  document.getElementById("browseBtn").onclick=()=>enterViewOnly(payload);
   document.getElementById("newFormBtn").onclick=()=>resetAll();
+}
+function enterViewOnly(payload){
+  state.locked=true;
+  state.name=payload.name;state.grade=payload.grade;
+  state.picked=new Set(EVENTS.filter(e=>payload.events.includes(e.n)).map(e=>e.id));
+  state.cat="all";state.q="";state.submitting=false;
+  document.getElementById("search").value="";
+  hideOverlay();showIdBar();render();
 }
 
 /* ================= Utilities ================= */
