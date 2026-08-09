@@ -9,233 +9,136 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper:#FBFAF7;
-    --paper-2:#F2F0E9;
-    --ink:#16203A;
-    --ink-soft:#4C5670;
-    --line:#E2DED3;
-    --gold:#E0A008;
-    --gold-deep:#B67D00;
-
-    /* Discipline colors — these encode the official event category */
-    --c-life:#1F9E6A;
-    --c-earth:#2E74C4;
-    --c-phys:#7A53C6;
-    --c-tech:#E0722F;
-    --c-inq:#CE3A6C;
-
-    --radius:14px;
-    --shadow:0 1px 0 rgba(22,32,58,.04), 0 8px 24px -14px rgba(22,32,58,.22);
+    --paper:#FBFAF7; --paper-2:#F2F0E9; --ink:#16203A; --ink-soft:#4C5670;
+    --line:#E2DED3; --gold:#E0A008; --gold-deep:#B67D00;
+    --c-life:#1F9E6A; --c-earth:#2E74C4; --c-phys:#7A53C6; --c-tech:#E0722F; --c-inq:#CE3A6C;
+    --radius:14px; --shadow:0 1px 0 rgba(22,32,58,.04), 0 8px 24px -14px rgba(22,32,58,.22);
   }
-
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
-  body{
-    margin:0;
-    background:
-      linear-gradient(var(--paper),var(--paper)),
-      repeating-linear-gradient(0deg, transparent 0 31px, rgba(22,32,58,.035) 31px 32px);
-    color:var(--ink);
-    font-family:"IBM Plex Sans",system-ui,sans-serif;
-    line-height:1.5;
-    -webkit-font-smoothing:antialiased;
-    padding-bottom:120px;
-  }
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:"IBM Plex Sans",system-ui,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;padding-bottom:130px}
   a{color:inherit}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 22px}
 
-  .wrap{max-width:1120px;margin:0 auto;padding:0 22px}
-
-  /* ---------- Hero ---------- */
-  header.hero{
-    border-bottom:1px solid var(--line);
-    background:
-      radial-gradient(120% 140% at 100% 0%, rgba(224,160,8,.10), transparent 55%),
-      var(--paper);
-  }
-  .hero-inner{padding:44px 22px 34px;max-width:1120px;margin:0 auto}
-  .eyebrow{
-    font-family:"IBM Plex Mono",monospace;
-    font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;
-    color:var(--gold-deep);display:flex;gap:10px;align-items:center;
-  }
+  header.hero{border-bottom:1px solid var(--line);
+    background:radial-gradient(120% 140% at 100% 0%, rgba(224,160,8,.10), transparent 55%), var(--paper)}
+  .hero-inner{padding:44px 22px 32px;max-width:1080px;margin:0 auto}
+  .eyebrow{font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--gold-deep);display:flex;gap:10px;align-items:center}
   .eyebrow::before{content:"";width:26px;height:2px;background:var(--gold)}
-  h1{
-    font-family:"Space Grotesk",sans-serif;
-    font-weight:700;
-    font-size:clamp(2.1rem,5.4vw,3.6rem);
-    line-height:1.02;
-    letter-spacing:-.02em;
-    margin:.28em 0 .18em;
-    max-width:16ch;
-  }
+  h1{font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:clamp(2.1rem,5.4vw,3.5rem);line-height:1.03;
+    letter-spacing:-.02em;margin:.28em 0 .16em;max-width:16ch}
   h1 .swap{color:var(--gold-deep)}
-  .lede{font-size:1.06rem;color:var(--ink-soft);max-width:56ch;margin:0}
-  .hero-stats{
-    display:flex;gap:26px;flex-wrap:wrap;margin-top:22px;
-    font-family:"IBM Plex Mono",monospace;font-size:13px;color:var(--ink-soft);
-  }
-  .hero-stats b{
-    display:block;font-size:1.7rem;color:var(--ink);
-    font-family:"Space Grotesk",sans-serif;line-height:1;
-  }
+  .lede{font-size:1.05rem;color:var(--ink-soft);max-width:56ch;margin:0}
+  .meta{font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--ink-soft);margin-top:16px}
 
-  /* ---------- Controls ---------- */
-  .controls{
-    position:sticky;top:0;z-index:40;
-    background:rgba(251,250,247,.86);
-    backdrop-filter:blur(9px);
-    border-bottom:1px solid var(--line);
-    padding:12px 0;
-  }
-  .controls-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-  .search{
-    flex:1 1 240px;min-width:200px;position:relative;
-  }
-  .search input{
-    width:100%;padding:11px 14px 11px 38px;
-    border:1px solid var(--line);border-radius:10px;background:#fff;
-    font:inherit;color:var(--ink);
-  }
+  .controls{position:sticky;top:0;z-index:40;background:rgba(251,250,247,.9);backdrop-filter:blur(9px);
+    border-bottom:1px solid var(--line);padding:13px 0}
+  .search{position:relative;max-width:100%}
+  .search input{width:100%;padding:11px 14px 11px 38px;border:1px solid var(--line);border-radius:10px;background:#fff;font:inherit;color:var(--ink)}
   .search input:focus{outline:2px solid var(--gold);outline-offset:1px;border-color:transparent}
   .search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);opacity:.5}
-
-  .seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
-  .seg button{
-    font:inherit;font-size:.9rem;padding:9px 15px;border:0;background:transparent;
-    color:var(--ink-soft);cursor:pointer;border-right:1px solid var(--line);
-  }
-  .seg button:last-child{border-right:0}
-  .seg button[aria-pressed="true"]{background:var(--ink);color:#fff;font-weight:600}
-
-  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}
-  .chip{
-    font:inherit;font-size:.84rem;padding:6px 13px;border-radius:999px;cursor:pointer;
-    border:1px solid var(--line);background:#fff;color:var(--ink-soft);
-    display:inline-flex;align-items:center;gap:7px;
-  }
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px;align-items:center}
+  .chip{font:inherit;font-size:.85rem;padding:6px 13px;border-radius:999px;cursor:pointer;border:1px solid var(--line);
+    background:#fff;color:var(--ink-soft);display:inline-flex;align-items:center;gap:7px}
   .chip .dot{width:9px;height:9px;border-radius:50%;background:var(--d,#bbb)}
   .chip[aria-pressed="true"]{border-color:var(--ink);color:var(--ink);font-weight:600;background:var(--paper-2)}
-  .chip.kind[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
   .chip.picks[aria-pressed="true"]{background:var(--gold);border-color:var(--gold-deep);color:#3a2b00;font-weight:600}
+  .divider-dot{width:1px;height:22px;background:var(--line);margin:0 2px}
 
-  .divider-dot{width:1px;height:22px;background:var(--line)}
+  .idbar{max-width:1080px;margin:14px auto 0;padding:9px 16px;background:var(--paper-2);border:1px solid var(--line);
+    border-radius:10px;font-size:.9rem;color:var(--ink-soft);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .idbar b{color:var(--ink)}
+  .idbar button{margin-left:auto;font:inherit;font-size:.82rem;background:none;border:0;color:var(--c-earth);cursor:pointer;text-decoration:underline;text-underline-offset:2px}
 
-  /* ---------- Sections ---------- */
-  main{padding-top:30px}
-  .cat-head{
-    display:flex;align-items:center;gap:12px;margin:34px 0 15px;
-  }
+  main{padding-top:22px}
+  .cat-head{display:flex;align-items:center;gap:12px;margin:30px 0 15px}
   .cat-head .bar{width:34px;height:6px;border-radius:3px;background:var(--cc)}
-  .cat-head h2{
-    font-family:"Space Grotesk",sans-serif;font-size:1.28rem;font-weight:600;margin:0;letter-spacing:-.01em;
-  }
-  .cat-head .n{
-    font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-soft);
-    margin-left:auto;
-  }
+  .cat-head h2{font-family:"Space Grotesk",sans-serif;font-size:1.28rem;font-weight:600;margin:0;letter-spacing:-.01em}
+  .cat-head .n{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-soft);margin-left:auto}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:14px}
 
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(268px,1fr));gap:14px}
-
-  .card{
-    position:relative;background:#fff;border:1px solid var(--line);border-radius:var(--radius);
-    padding:16px 16px 15px 20px;box-shadow:var(--shadow);
-    display:flex;flex-direction:column;gap:9px;transition:transform .12s ease, box-shadow .12s ease;
-  }
-  .card::before{
-    content:"";position:absolute;left:0;top:0;bottom:0;width:6px;
-    border-radius:var(--radius) 0 0 var(--radius);background:var(--cc);
-  }
-  .card.on{border-color:var(--gold-deep);box-shadow:0 10px 26px -14px rgba(182,125,0,.55)}
-  .card.on::after{
-    content:"IN YOUR LINEUP";position:absolute;top:12px;right:12px;
-    font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.09em;
-    color:var(--gold-deep);
-  }
-  .card .top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
-  .card h3{font-family:"Space Grotesk",sans-serif;font-size:1.06rem;font-weight:600;margin:0;letter-spacing:-.01em;padding-right:2px}
-  .card p{margin:0;font-size:.9rem;color:var(--ink-soft)}
-  .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px}
-  .tag{
-    font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.03em;
-    padding:3px 7px;border-radius:6px;background:var(--paper-2);color:var(--ink-soft);
-  }
-  .tag.kind{background:var(--ink);color:#fff}
-  .card .foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto;padding-top:4px}
-  .rules-link{font-size:.8rem;color:var(--c-earth);text-decoration:none;font-weight:500}
+  .card{position:relative;background:#fff;border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px 16px 14px 20px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:8px}
+  .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;border-radius:var(--radius) 0 0 var(--radius);background:var(--cc)}
+  .card.on{border-color:var(--gold-deep);box-shadow:0 10px 26px -14px rgba(182,125,0,.5)}
+  .card h3{font-family:"Space Grotesk",sans-serif;font-size:1.08rem;font-weight:600;margin:0;letter-spacing:-.01em;line-height:1.2}
+  .card .tag{align-self:flex-start;font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.02em;
+    padding:3px 8px;border-radius:6px;background:var(--paper-2);color:var(--ink-soft)}
+  .card p{margin:0;font-size:.9rem;color:var(--ink-soft);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .card .foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto;padding-top:6px}
+  .rules-link{font-size:.8rem;color:var(--c-earth);text-decoration:none}
   .rules-link:hover{text-decoration:underline}
-
-  .add{
-    font:inherit;font-size:.85rem;font-weight:600;cursor:pointer;
-    border:1px solid var(--ink);background:#fff;color:var(--ink);
-    padding:7px 13px;border-radius:9px;display:inline-flex;align-items:center;gap:7px;
-    transition:background .12s ease;
-  }
+  .add{font:inherit;font-size:.85rem;font-weight:600;cursor:pointer;border:1px solid var(--ink);background:#fff;color:var(--ink);
+    padding:7px 14px;border-radius:9px;display:inline-flex;align-items:center;gap:7px;transition:background .12s}
   .add:hover{background:var(--paper-2)}
   .add.on{background:var(--gold);border-color:var(--gold-deep);color:#3a2b00}
   .add .chk{width:14px;height:14px}
 
-  .empty{
-    text-align:center;padding:60px 20px;color:var(--ink-soft);
-    border:1px dashed var(--line);border-radius:var(--radius);margin-top:20px;
-  }
+  .empty{text-align:center;padding:60px 20px;color:var(--ink-soft);border:1px dashed var(--line);border-radius:var(--radius);margin-top:20px}
   .empty b{color:var(--ink);font-family:"Space Grotesk",sans-serif}
 
-  /* ---------- Lineup tray ---------- */
-  .tray{
-    position:fixed;left:0;right:0;bottom:0;z-index:60;
-    border-top:1px solid var(--line);
-    background:rgba(251,250,247,.94);backdrop-filter:blur(10px);
-    box-shadow:0 -10px 30px -18px rgba(22,32,58,.4);
-  }
-  .tray-bar{max-width:1120px;margin:0 auto;padding:12px 22px;display:flex;align-items:center;gap:14px}
-  .tray-count{
-    font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:1.05rem;
-    display:flex;align-items:center;gap:10px;
-  }
-  .badge{
-    background:var(--gold);color:#3a2b00;border-radius:8px;min-width:30px;text-align:center;
-    padding:3px 8px;font-family:"IBM Plex Mono",monospace;
-  }
-  .tray-actions{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
-  .tray-actions button{
-    font:inherit;font-size:.85rem;padding:8px 13px;border-radius:9px;cursor:pointer;
-    border:1px solid var(--line);background:#fff;color:var(--ink);
-  }
+  /* Tray */
+  .tray{position:fixed;left:0;right:0;bottom:0;z-index:60;border-top:1px solid var(--line);
+    background:rgba(251,250,247,.94);backdrop-filter:blur(10px);box-shadow:0 -10px 30px -18px rgba(22,32,58,.4)}
+  .tray-bar{max-width:1080px;margin:0 auto;padding:12px 22px;display:flex;align-items:center;gap:14px}
+  .tray-count{font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:1.05rem;display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;color:var(--ink)}
+  .badge{background:var(--gold);color:#3a2b00;border-radius:8px;min-width:30px;text-align:center;padding:3px 8px;font-family:"IBM Plex Mono",monospace}
+  .tray-actions{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .tray-actions button{font:inherit;font-size:.85rem;padding:8px 13px;border-radius:9px;cursor:pointer;border:1px solid var(--line);background:#fff;color:var(--ink)}
   .tray-actions button:hover{background:var(--paper-2)}
-  .tray-actions .primary{background:var(--ink);color:#fff;border-color:var(--ink)}
-  .tray-actions .primary:disabled{opacity:.4;cursor:not-allowed}
-
-  .tray-list{max-width:1120px;margin:0 auto;padding:0 22px;max-height:0;overflow:hidden;transition:max-height .28s ease}
-  .tray.open .tray-list{max-height:340px;overflow-y:auto;padding-bottom:16px}
-  .pick{
-    display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:.92rem;
-  }
+  .tray-actions .submit{background:var(--gold);color:#3a2b00;border-color:var(--gold-deep);font-weight:600}
+  .tray-actions .submit:hover{background:var(--gold-deep);color:#fff}
+  .tray-actions button:disabled{opacity:.4;cursor:not-allowed}
+  .tray-list{max-width:1080px;margin:0 auto;padding:0 22px;max-height:0;overflow:hidden;transition:max-height .28s ease}
+  .tray.open .tray-list{max-height:300px;overflow-y:auto;padding-bottom:16px}
+  .pick{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:.92rem}
   .pick .pdot{width:10px;height:10px;border-radius:50%;background:var(--cc);flex:none}
   .pick .pmeta{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-soft)}
   .pick button{border:0;background:transparent;cursor:pointer;color:var(--ink-soft);font-size:1.1rem;line-height:1;padding:2px 6px;border-radius:6px}
   .pick button:hover{background:var(--paper-2);color:var(--c-inq)}
 
-  .toast{
-    position:fixed;bottom:96px;left:50%;transform:translateX(-50%) translateY(10px);
-    background:var(--ink);color:#fff;padding:10px 18px;border-radius:10px;font-size:.9rem;
-    opacity:0;pointer-events:none;transition:opacity .2s, transform .2s;z-index:80;
-  }
+  /* Overlay (gate + confirmation) */
+  .overlay{position:fixed;inset:0;z-index:100;background:rgba(22,32,58,.34);backdrop-filter:blur(3px);
+    display:flex;align-items:center;justify-content:center;padding:22px}
+  .overlay[hidden]{display:none}
+  .sheet{background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:0 30px 80px -30px rgba(22,32,58,.6);
+    max-width:460px;width:100%;padding:30px 28px;max-height:90vh;overflow:auto}
+  .sheet h2{font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:1.5rem;margin:0 0 6px;letter-spacing:-.01em}
+  .sheet .sub{color:var(--ink-soft);font-size:.95rem;margin:0 0 20px}
+  .field{margin-bottom:15px}
+  .field label{display:block;font-size:.82rem;font-weight:600;margin-bottom:6px;color:var(--ink)}
+  .field input,.field select{width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:10px;font:inherit;color:var(--ink);background:#fff}
+  .field input:focus,.field select:focus{outline:2px solid var(--gold);outline-offset:1px;border-color:transparent}
+  .form-err{color:var(--c-inq);font-size:.85rem;min-height:1.2em;margin:2px 0 12px}
+  .btn-primary{width:100%;font:inherit;font-weight:600;font-size:1rem;padding:12px;border-radius:11px;border:1px solid var(--gold-deep);
+    background:var(--gold);color:#3a2b00;cursor:pointer}
+  .btn-primary:hover{background:var(--gold-deep);color:#fff}
+  .btn-primary:disabled{opacity:.6;cursor:not-allowed}
+  .done-badge{width:56px;height:56px;border-radius:50%;background:var(--c-life);color:#fff;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+  .done-badge.dup{background:var(--gold-deep)}
+  .done-list{list-style:none;padding:0;margin:14px 0 0;border-top:1px solid var(--line)}
+  .done-list li{padding:7px 0;border-bottom:1px solid var(--line);font-size:.92rem;display:flex;align-items:center;gap:9px}
+  .done-list .pdot{width:9px;height:9px;border-radius:50%;flex:none}
+  .newform{margin-top:20px;font-size:.85rem;color:var(--ink-soft);text-align:center}
+  .newform button{font:inherit;background:none;border:0;color:var(--c-earth);cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+
+  .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--ink);color:#fff;
+    padding:10px 18px;border-radius:10px;font-size:.9rem;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:120;max-width:90vw;text-align:center}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-  footer.pagefoot{max-width:1120px;margin:40px auto 0;padding:22px;border-top:1px solid var(--line);color:var(--ink-soft);font-size:.82rem}
+  footer.pagefoot{max-width:1080px;margin:40px auto 0;padding:22px;border-top:1px solid var(--line);color:var(--ink-soft);font-size:.82rem}
   footer.pagefoot a{color:var(--c-earth)}
-
   :focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:6px}
 
   @media (max-width:600px){
     .tray-actions button span{display:none}
-    .hero-inner{padding:34px 20px 26px}
+    .tray-actions .submit span{display:inline}
+    .hero-inner{padding:34px 20px 24px}
   }
-  @media (prefers-reduced-motion:reduce){
-    *{transition:none!important;scroll-behavior:auto}
-  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto}}
 
-  /* ---------- Print (prints just the lineup) ---------- */
   #printArea{display:none}
   @media print{
     body>*{display:none!important}
@@ -250,50 +153,31 @@
 
 <header class="hero">
   <div class="hero-inner">
-    <div class="eyebrow">Science Olympiad &middot; 2027 Season</div>
-    <h1>Find the events <span class="swap">you</span> want to compete in.</h1>
-    <p class="lede">Browse every event, read what each one is really about, and build your personal lineup. When you're done, copy or print your list and share it with your coach.</p>
-    <div class="hero-stats">
-      <div><b id="statTotal">0</b>events to explore</div>
-      <div><b>2</b>divisions (B &amp; C)</div>
-      <div><b>5</b>science disciplines</div>
-    </div>
+    <div class="eyebrow">Science Olympiad &middot; Division C</div>
+    <h1>Pick the events <span class="swap">you</span> want to compete in.</h1>
+    <p class="lede">Enter your name, browse every Division C event, add the ones you're interested in, and submit your final list. You can submit once.</p>
+    <div class="meta" id="meta"></div>
   </div>
 </header>
 
 <div class="controls">
   <div class="wrap">
-    <div class="controls-row">
-      <label class="search">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-        <input id="search" type="search" placeholder="Search events (e.g. rockets, DNA, circuits)" aria-label="Search events">
-      </label>
-      <div class="seg" role="group" aria-label="Division">
-        <button data-div="all" aria-pressed="true">All</button>
-        <button data-div="B" aria-pressed="false">Div B &middot; MS</button>
-        <button data-div="C" aria-pressed="false">Div C &middot; HS</button>
-      </div>
-    </div>
+    <label class="search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="search" type="search" placeholder="Search events (rockets, DNA, circuits…)" aria-label="Search events">
+    </label>
     <div class="chips" id="catChips" aria-label="Filter by discipline"></div>
-    <div class="chips" id="kindChips" aria-label="Filter by type">
-      <button class="chip kind" data-kind="all" aria-pressed="true">All types</button>
-      <button class="chip kind" data-kind="build" aria-pressed="false">🔧 Build</button>
-      <button class="chip kind" data-kind="lab" aria-pressed="false">🧪 Lab &amp; hands-on</button>
-      <button class="chip kind" data-kind="study" aria-pressed="false">📚 Study &amp; test</button>
-      <button class="chip kind" data-kind="skills" aria-pressed="false">🧩 Puzzle &amp; skills</button>
-      <span class="divider-dot" aria-hidden="true"></span>
-      <button class="chip picks" data-pickonly aria-pressed="false">★ My picks only</button>
-    </div>
   </div>
 </div>
+
+<div class="wrap"><div class="idbar" id="idbar" hidden>Picking as <b id="idName"></b>, <span id="idGrade"></span> <button id="switchBtn">Not you? Start over</button></div></div>
 
 <main class="wrap" id="board"></main>
 
 <footer class="pagefoot">
-  Event names, categories, and rules belong to <a href="https://www.soinc.org" target="_blank" rel="noopener">Science Olympiad, Inc.</a> — this is an unofficial student helper for exploring the 2027 season. Descriptions and the "type" tags are informal summaries to help you choose; always check the official rules for each event. The <em>type</em> tag is a rough guide, not an official category.
+  Event names, categories, and rules belong to <a href="https://www.soinc.org" target="_blank" rel="noopener">Science Olympiad, Inc.</a> — this is an unofficial student helper for the Division C (high school) 2027 season. Descriptions and type tags are informal summaries; always check the official rules for each event.
 </footer>
 
-<!-- Lineup tray -->
 <div class="tray" id="tray">
   <div class="tray-bar">
     <button class="tray-count" id="trayToggle" aria-expanded="false" aria-controls="trayList">
@@ -301,259 +185,258 @@
       <svg id="caret" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 15 6-6 6 6"/></svg>
     </button>
     <div class="tray-actions">
-      <button id="btnLink"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg> <span>Copy link</span></button>
       <button id="btnCopy"><span>Copy list</span></button>
-      <button id="btnPrint"><span>Print</span></button>
-      <button class="primary" id="btnClear" disabled><span>Clear</span></button>
+      <button id="btnClear" disabled><span>Clear</span></button>
+      <button class="submit" id="btnSubmit" disabled>Submit selection</button>
     </div>
   </div>
   <div class="tray-list" id="trayList"></div>
+</div>
+
+<!-- Overlay: name/grade gate + confirmation -->
+<div class="overlay" id="overlay" hidden>
+  <div class="sheet">
+    <div id="gateView">
+      <h2>Welcome! Let's get started</h2>
+      <p class="sub">Enter your name and grade, then browse and choose the events you're interested in.</p>
+      <div class="field">
+        <label for="gName">Full name</label>
+        <input id="gName" type="text" autocomplete="off" placeholder="e.g. Jordan Lee">
+      </div>
+      <div class="field">
+        <label for="gGrade">Grade</label>
+        <select id="gGrade">
+          <option value="">Choose your grade…</option>
+          <option value="9">9th grade</option>
+          <option value="10">10th grade</option>
+          <option value="11">11th grade</option>
+          <option value="12">12th grade</option>
+        </select>
+      </div>
+      <div class="form-err" id="gErr"></div>
+      <button class="btn-primary" id="gStart">Start browsing events</button>
+    </div>
+    <div id="doneView" hidden></div>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
 <div id="printArea"></div>
 
 <script>
-/* ---------------- Data (2027 season, from soinc.org) ---------------- */
-const CATS = [
-  {id:"life",  name:"Life, Personal & Social Science", color:"var(--c-life)"},
-  {id:"earth", name:"Earth & Space Science",           color:"var(--c-earth)"},
-  {id:"phys",  name:"Physical Science & Chemistry",    color:"var(--c-phys)"},
-  {id:"tech",  name:"Technology & Engineering",        color:"var(--c-tech)"},
-  {id:"inq",   name:"Inquiry & Nature of Science",     color:"var(--c-inq)"},
+/* ================= CONFIG ================= */
+/* Paste the Web App URL from your Google Apps Script deployment between the quotes. */
+const SUBMIT_URL = "https://script.google.com/a/macros/stargateschool.org/s/AKfycbxCLTvqS7npPgSjF9AFDxqZnIHYToczFra_aryxFQ6VhdwLpnXdSai93Sim0vCRO06Q/exec";
+function isConfigured(){ return SUBMIT_URL && !/PASTE_|_HERE/.test(SUBMIT_URL); }
+
+/* ================= Data — Division C, 2027 season (soinc.org) ================= */
+const CATS=[
+  {id:"life",  name:"Life & Social Science",        color:"var(--c-life)", hex:"#1F9E6A"},
+  {id:"earth", name:"Earth & Space Science",        color:"var(--c-earth)",hex:"#2E74C4"},
+  {id:"phys",  name:"Physical Science & Chemistry", color:"var(--c-phys)", hex:"#7A53C6"},
+  {id:"tech",  name:"Technology & Engineering",     color:"var(--c-tech)", hex:"#E0722F"},
+  {id:"inq",   name:"Inquiry & Nature of Science",  color:"var(--c-inq)",  hex:"#CE3A6C"},
 ];
-const CATVAR = {life:"var(--c-life)",earth:"var(--c-earth)",phys:"var(--c-phys)",tech:"var(--c-tech)",inq:"var(--c-inq)"};
-
+const CATVAR={life:"var(--c-life)",earth:"var(--c-earth)",phys:"var(--c-phys)",tech:"var(--c-tech)",inq:"var(--c-inq)"};
+const CATHEX={}; CATS.forEach(c=>CATHEX[c.id]=c.hex);
 const BASE="https://www.soinc.org/";
-// divs: which divisions list it. slugs: official page slug per division.
-const EVENTS = [
-  {n:"Anatomy and Physiology", cat:"life", kind:"study", divs:["B","C"], slugs:{B:"anatomy-and-physiology-b",C:"anatomy-and-physiology-c"}, d:"Learn how the human body's systems work — and what happens when disease strikes them."},
-  {n:"Botany", cat:"life", kind:"study", divs:["B","C"], slugs:{B:"botany-b",C:"botany-c"}, d:"Study plant structure, function, and classification across the major plant groups."},
-  {n:"Disease Detectives", cat:"life", kind:"lab", divs:["B","C"], slugs:{B:"disease-detectives-b",C:"disease-detectives-c"}, d:"Play epidemiologist: investigate outbreaks and figure out how illness spreads."},
-  {n:"Water Quality", cat:"life", kind:"lab", divs:["B","C"], slugs:{B:"water-quality-b",C:"water-quality-c"}, d:"Explore freshwater and marine ecosystems and what keeps water healthy."},
-  {n:"Heredity", cat:"life", kind:"study", divs:["B"], slugs:{B:"heredity-b"}, d:"Explore genetics and how traits pass from one generation to the next."},
-  {n:"Designer Genes", cat:"life", kind:"study", divs:["C"], slugs:{C:"designer-genes-c"}, d:"Dig into molecular genetics — DNA, inheritance, and modern biotech tools."},
+const KIND_LABEL={build:"🔧 Build",lab:"🧪 Lab",study:"📚 Study",skills:"🧩 Puzzle"};
 
-  {n:"Dynamic Planet", cat:"earth", kind:"study", divs:["B","C"], slugs:{B:"dynamic-planet-b",C:"dynamic-planet-c"}, d:"Learn Earth's physical processes; the yearly focus rotates (oceans, glaciers, tectonics...)."},
-  {n:"Remote Sensing", cat:"earth", kind:"study", divs:["B","C"], slugs:{B:"remote-sensing-b",C:"remote-sensing-c"}, d:"Read satellite and sensor data to track Earth's changing surface and climate."},
-  {n:"Rocks and Minerals", cat:"earth", kind:"study", divs:["B","C"], slugs:{B:"rocks-and-minerals-b",C:"rocks-and-minerals-c"}, d:"Identify specimens and learn how rocks and minerals form."},
-  {n:"Meteorology", cat:"earth", kind:"study", divs:["B"], slugs:{B:"meteorology-b"}, d:"Study weather and the atmosphere to understand and predict conditions."},
-  {n:"Solar System", cat:"earth", kind:"study", divs:["B"], slugs:{B:"solar-system-b"}, d:"Tour the planets, moons, and small bodies orbiting our Sun."},
-  {n:"Astronomy", cat:"earth", kind:"study", divs:["C"], slugs:{C:"astronomy-c"}, d:"Study stars, galaxies, and stellar evolution — plus the physics behind them."},
+const EVENTS=[
+  {n:"Anatomy and Physiology", cat:"life", kind:"study", slug:"anatomy-and-physiology-c", d:"Learn how the human body's systems work — and what happens when disease strikes them."},
+  {n:"Botany", cat:"life", kind:"study", slug:"botany-c", d:"Study plant structure, function, and classification across the major plant groups."},
+  {n:"Designer Genes", cat:"life", kind:"study", slug:"designer-genes-c", d:"Dig into molecular genetics — DNA, inheritance, and modern biotech tools."},
+  {n:"Disease Detectives", cat:"life", kind:"lab", slug:"disease-detectives-c", d:"Play epidemiologist: investigate outbreaks and figure out how illness spreads."},
+  {n:"Water Quality", cat:"life", kind:"lab", slug:"water-quality-c", d:"Explore freshwater and marine ecosystems and what keeps water healthy."},
 
-  {n:"Circuit Lab", cat:"phys", kind:"lab", divs:["B","C"], slugs:{B:"circuit-lab-b",C:"circuit-lab-c"}, d:"Build and analyze electrical circuits and learn the physics of electricity."},
-  {n:"Hovercraft", cat:"phys", kind:"build", divs:["B","C"], slugs:{B:"hovercraft-b",C:"hovercraft-c"}, d:"Build a self-propelled hovercraft and answer physics questions on motion."},
-  {n:"Thermodynamics", cat:"phys", kind:"build", divs:["B","C"], slugs:{B:"thermodynamics-b",C:"thermodynamics-c"}, d:"Study heat and energy, and build an insulated device to control temperature."},
-  {n:"Crime Busters", cat:"phys", kind:"lab", divs:["B"], slugs:{B:"crime-busters-b"}, d:"The intro forensics event: identify substances to crack a mock case."},
-  {n:"Food Science", cat:"phys", kind:"lab", divs:["B"], slugs:{B:"food-science-b"}, d:"Explore the chemistry of food, from reactions to nutrition."},
-  {n:"Chemistry Lab", cat:"phys", kind:"lab", divs:["C"], slugs:{C:"chemistry-lab-c-0"}, d:"Run real lab work in areas like reactions, stoichiometry, and equilibrium."},
-  {n:"Forensics", cat:"phys", kind:"lab", divs:["C"], slugs:{C:"forensics-c"}, d:"Use chemistry and analysis to solve a mock crime from physical evidence."},
-  {n:"Protein Modeling", cat:"phys", kind:"build", divs:["C"], slugs:{C:"protein-modeling-c"}, d:"Build physical and computer models of proteins to study how they're shaped."},
+  {n:"Astronomy", cat:"earth", kind:"study", slug:"astronomy-c", d:"Study stars, galaxies, and stellar evolution — plus the physics behind them."},
+  {n:"Dynamic Planet", cat:"earth", kind:"study", slug:"dynamic-planet-c", d:"Learn Earth's physical processes; the yearly focus rotates (oceans, glaciers, tectonics…)."},
+  {n:"Remote Sensing", cat:"earth", kind:"study", slug:"remote-sensing-c", d:"Read satellite and sensor data to track Earth's changing surface and climate."},
+  {n:"Rocks and Minerals", cat:"earth", kind:"study", slug:"rocks-and-minerals-c", d:"Identify specimens and learn how rocks and minerals form."},
 
-  {n:"Boomilever", cat:"tech", kind:"build", divs:["B","C"], slugs:{B:"boomilever-b",C:"boomilever-c"}, d:"Design a featherweight cantilever structure that holds the most weight."},
-  {n:"Elastic Launched Gliders", cat:"tech", kind:"build", divs:["B"], slugs:{B:"elastic-launched-gliders-b"}, d:"Build a light glider launched by elastic for the longest possible flight."},
-  {n:"Roller Coaster", cat:"tech", kind:"build", divs:["B"], slugs:{B:"roller-coaster-b"}, d:"Build a track that guides a ball to finish as close to a target time as possible."},
-  {n:"Scrambler", cat:"tech", kind:"build", divs:["B"], slugs:{B:"scrambler-b-0"}, d:"Engineer a vehicle that races forward and stops precisely at a wall."},
-  {n:"Electric Vehicle", cat:"tech", kind:"build", divs:["C"], slugs:{C:"electric-vehicle-c"}, d:"Build a battery-powered vehicle that travels a set distance accurately."},
-  {n:"Mission Possible", cat:"tech", kind:"build", divs:["C"], slugs:{C:"mission-possible-c"}, d:"Engineer a Rube Goldberg–style chain of tasks that runs start to finish on cue."},
-  {n:"Wright Stuff", cat:"tech", kind:"build", divs:["C"], slugs:{C:"wright-stuff-c"}, d:"Build a rubber-powered indoor airplane that stays aloft the longest."},
+  {n:"Chemistry Lab", cat:"phys", kind:"lab", slug:"chemistry-lab-c-0", d:"Run real lab work in areas like reactions, stoichiometry, and equilibrium."},
+  {n:"Circuit Lab", cat:"phys", kind:"lab", slug:"circuit-lab-c", d:"Build and analyze electrical circuits and learn the physics of electricity."},
+  {n:"Forensics", cat:"phys", kind:"lab", slug:"forensics-c", d:"Use chemistry and analysis to solve a mock crime from physical evidence."},
+  {n:"Hovercraft", cat:"phys", kind:"build", slug:"hovercraft-c", d:"Build a self-propelled hovercraft and answer physics questions on motion."},
+  {n:"Protein Modeling", cat:"phys", kind:"build", slug:"protein-modeling-c", d:"Build physical and computer models of proteins to study how they're shaped."},
+  {n:"Thermodynamics", cat:"phys", kind:"build", slug:"thermodynamics-c", d:"Study heat and energy, and build an insulated device to control temperature."},
 
-  {n:"Codebusters", cat:"inq", kind:"skills", divs:["B","C"], slugs:{B:"codebusters-b",C:"codebusters-c"}, d:"Crack coded messages by hand using classic ciphers — against the clock."},
-  {n:"Experimental Design", cat:"inq", kind:"lab", divs:["B","C"], slugs:{B:"experimental-design-b",C:"experimental-design-c"}, d:"Design, run, and write up a full experiment on the spot from given materials."},
-  {n:"Ping-Pong Parachute", cat:"inq", kind:"build", divs:["B","C"], slugs:{B:"ping-pong-parachute-b",C:"ping-pong-parachute-c"}, d:"Launch a rocket carrying a ping-pong ball that parachutes gently back down."},
-  {n:"Write It Do It", cat:"inq", kind:"skills", divs:["B"], slugs:{B:"write-it-do-it-b"}, d:"One teammate writes instructions; the other rebuilds an object using only those words."},
-  {n:"Engineering CAD", cat:"inq", kind:"build", divs:["C"], slugs:{C:"engineering-cad-c"}, d:"Use computer-aided design software to model parts and solve design prompts."},
+  {n:"Boomilever", cat:"tech", kind:"build", slug:"boomilever-c", d:"Design a featherweight cantilever structure that holds the most weight."},
+  {n:"Electric Vehicle", cat:"tech", kind:"build", slug:"electric-vehicle-c", d:"Build a battery-powered vehicle that travels a set distance accurately."},
+  {n:"Mission Possible", cat:"tech", kind:"build", slug:"mission-possible-c", d:"Engineer a Rube Goldberg–style chain of tasks that runs start to finish on cue."},
+  {n:"Wright Stuff", cat:"tech", kind:"build", slug:"wright-stuff-c", d:"Build a rubber-powered indoor airplane that stays aloft the longest."},
+
+  {n:"Codebusters", cat:"inq", kind:"skills", slug:"codebusters-c", d:"Crack coded messages by hand using classic ciphers — against the clock."},
+  {n:"Engineering CAD", cat:"inq", kind:"build", slug:"engineering-cad-c", d:"Use computer-aided design software to model parts and solve design prompts."},
+  {n:"Experimental Design", cat:"inq", kind:"lab", slug:"experimental-design-c", d:"Design, run, and write up a full experiment on the spot from given materials."},
+  {n:"Ping-Pong Parachute", cat:"inq", kind:"build", slug:"ping-pong-parachute-c", d:"Launch a rocket carrying a ping-pong ball that parachutes gently back down."},
 ];
 EVENTS.forEach(e=> e.id = e.n.toLowerCase().replace(/[^a-z0-9]+/g,"-"));
 
-/* ---------------- State ---------------- */
-const state = { div:"all", cat:"all", kind:"all", q:"", picksOnly:false, picked:new Set() };
+/* ================= Session storage (per-tab, resets on close) ================= */
+function ssGet(k){try{return sessionStorage.getItem(k);}catch(e){return null;}}
+function ssSet(k,v){try{sessionStorage.setItem(k,v);}catch(e){}}
+function ssDel(k){try{sessionStorage.removeItem(k);}catch(e){}}
 
-/* Restore from URL hash (?p=...) or localStorage */
+/* ================= State ================= */
+const state={cat:"all",q:"",picked:new Set(),name:null,grade:null,submitting:false};
 (function restore(){
-  try{
-    const h = new URLSearchParams(location.hash.slice(1));
-    if(h.get("p")){ h.get("p").split(",").forEach(id=>id&&state.picked.add(id)); return; }
-  }catch(e){}
-  try{
-    const s = localStorage.getItem("scioly-picks");
-    if(s) JSON.parse(s).forEach(id=>state.picked.add(id));
-  }catch(e){}
+  try{const id=JSON.parse(ssGet("so_identity")||"null");if(id){state.name=id.name;state.grade=id.grade;}}catch(e){}
+  try{const p=JSON.parse(ssGet("so_picks")||"null");if(Array.isArray(p))p.forEach(x=>state.picked.add(x));}catch(e){}
 })();
-function persist(){
-  try{ localStorage.setItem("scioly-picks", JSON.stringify([...state.picked])); }catch(e){}
-}
+function persistPicks(){ssSet("so_picks",JSON.stringify([...state.picked]));}
+function persistIdentity(){ssSet("so_identity",JSON.stringify({name:state.name,grade:state.grade}));}
 
-/* ---------------- Build filter chips ---------------- */
-const catChips = document.getElementById("catChips");
-catChips.appendChild(makeChip("all","All disciplines",null));
-CATS.forEach(c=> catChips.appendChild(makeChip(c.id,c.name,c.color)));
-function makeChip(id,label,color){
-  const b=document.createElement("button");
-  b.className="chip"; b.dataset.cat=id; b.setAttribute("aria-pressed", id==="all");
-  b.innerHTML = (color?`<span class="dot" style="--d:${color}"></span>`:"") + shorten(label);
-  b.onclick=()=>{ state.cat=id; syncPressed(catChips,"cat",id); render(); };
+/* ================= Controls ================= */
+document.getElementById("meta").textContent = EVENTS.length + " events · " + CATS.length + " disciplines · High school";
+const catChips=document.getElementById("catChips");
+catChips.appendChild(chip("all","All events",null));
+CATS.forEach(c=>catChips.appendChild(chip(c.id,c.name,c.hex)));
+catChips.appendChild(Object.assign(document.createElement("span"),{className:"divider-dot"}));
+const pickChip=document.createElement("button");
+pickChip.className="chip picks";pickChip.setAttribute("aria-pressed","false");pickChip.textContent="★ My picks only";
+pickChip.onclick=function(){state.cat=state.cat==="picks"?"all":"picks";this.setAttribute("aria-pressed",state.cat==="picks");
+  catChips.querySelectorAll("[data-cat]").forEach(b=>b.setAttribute("aria-pressed","false"));render();};
+catChips.appendChild(pickChip);
+function chip(id,label,hex){
+  const b=document.createElement("button");b.className="chip";b.dataset.cat=id;b.setAttribute("aria-pressed",id==="all");
+  b.innerHTML=(hex?`<span class="dot" style="--d:${hex}"></span>`:"")+label;
+  b.onclick=()=>{state.cat=id;catChips.querySelectorAll("[data-cat]").forEach(x=>x.setAttribute("aria-pressed",x.dataset.cat===id));pickChip.setAttribute("aria-pressed","false");render();};
   return b;
 }
-function shorten(l){ return l.replace(", Personal & Social Science",""); }
+document.getElementById("search").addEventListener("input",e=>{state.q=e.target.value.toLowerCase().trim();render();});
 
-/* ---------------- Wire controls ---------------- */
-document.querySelectorAll(".seg [data-div]").forEach(b=>{
-  b.onclick=()=>{ state.div=b.dataset.div; syncPressedAttr(".seg [data-div]","div",b.dataset.div); render(); };
-});
-document.querySelectorAll("[data-kind]").forEach(b=>{
-  b.onclick=()=>{ state.kind=b.dataset.kind; syncPressedAttr("[data-kind]","kind",b.dataset.kind); render(); };
-});
-document.querySelector("[data-pickonly]").onclick=function(){
-  state.picksOnly=!state.picksOnly; this.setAttribute("aria-pressed",state.picksOnly); render();
-};
-document.getElementById("search").addEventListener("input",e=>{ state.q=e.target.value.toLowerCase().trim(); render(); });
-
-function syncPressed(container,key,val){ container.querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed", b.dataset[key]===val)); }
-function syncPressedAttr(sel,key,val){ document.querySelectorAll(sel).forEach(b=>b.setAttribute("aria-pressed", b.dataset[key]===val)); }
-
-/* ---------------- Render ---------------- */
+/* ================= Render events ================= */
 const board=document.getElementById("board");
-document.getElementById("statTotal").textContent = new Set(EVENTS.map(e=>e.n)).size;
-
 function visible(e){
-  if(state.div!=="all" && !e.divs.includes(state.div)) return false;
-  if(state.cat!=="all" && e.cat!==state.cat) return false;
-  if(state.kind!=="all" && e.kind!==state.kind) return false;
-  if(state.picksOnly && !state.picked.has(e.id)) return false;
-  if(state.q){ if(!(e.n.toLowerCase()+" "+e.d.toLowerCase()).includes(state.q)) return false; }
+  if(state.cat==="picks"){if(!state.picked.has(e.id))return false;}
+  else if(state.cat!=="all"&&e.cat!==state.cat)return false;
+  if(state.q&&!(e.n.toLowerCase()+" "+e.d.toLowerCase()).includes(state.q))return false;
   return true;
 }
-
 function render(){
-  const shown = EVENTS.filter(visible);
-  board.innerHTML="";
-  if(shown.length===0){
-    board.innerHTML=`<div class="empty"><b>No events match.</b><br>Try clearing a filter or searching something else.</div>`;
-  } else {
-    CATS.forEach(c=>{
-      const list = shown.filter(e=>e.cat===c.id);
-      if(!list.length) return;
-      const head=document.createElement("div");
-      head.className="cat-head"; head.style.setProperty("--cc",c.color);
-      head.innerHTML=`<span class="bar"></span><h2>${c.name}</h2><span class="n">${list.length} event${list.length>1?"s":""}</span>`;
-      board.appendChild(head);
-      const grid=document.createElement("div"); grid.className="grid";
-      list.forEach(e=>grid.appendChild(card(e)));
-      board.appendChild(grid);
-    });
-  }
+  const shown=EVENTS.filter(visible);board.innerHTML="";
+  if(!shown.length){board.innerHTML=`<div class="empty"><b>No events match.</b><br>Try clearing the search or another filter.</div>`;}
+  else CATS.forEach(c=>{
+    const list=shown.filter(e=>e.cat===c.id);if(!list.length)return;
+    const head=document.createElement("div");head.className="cat-head";head.style.setProperty("--cc",c.color);
+    head.innerHTML=`<span class="bar"></span><h2>${c.name}</h2><span class="n">${list.length} event${list.length>1?"s":""}</span>`;
+    board.appendChild(head);
+    const grid=document.createElement("div");grid.className="grid";list.forEach(e=>grid.appendChild(card(e)));board.appendChild(grid);
+  });
   updateTray();
 }
-
-const KIND_LABEL={build:"🔧 Build",lab:"🧪 Lab",study:"📚 Study",skills:"🧩 Skills"};
 function card(e){
-  const on=state.picked.has(e.id);
-  const el=document.createElement("article");
-  el.className="card"+(on?" on":""); el.style.setProperty("--cc",CATVAR[e.cat]);
-  const divTags=e.divs.map(d=>`<span class="tag">Div ${d}</span>`).join("");
-  const slug = e.slugs[e.divs.includes("C")?"C":e.divs[0]];
-  el.innerHTML=`
-    <div class="top"><h3>${e.n}</h3></div>
-    <p>${e.d}</p>
-    <div class="tags"><span class="tag kind">${KIND_LABEL[e.kind]}</span>${divTags}</div>
-    <div class="foot">
-      <a class="rules-link" href="${BASE}${slug}" target="_blank" rel="noopener">Official rules ↗</a>
-      <button class="add${on?" on":""}" aria-pressed="${on}">
-        ${on?'<svg class="chk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> In lineup':'+ Add'}
-      </button>
-    </div>`;
-  el.querySelector(".add").onclick=()=>toggle(e.id);
-  return el;
+  const on=state.picked.has(e.id);const el=document.createElement("article");
+  el.className="card"+(on?" on":"");el.style.setProperty("--cc",CATVAR[e.cat]);
+  el.innerHTML=`<h3>${e.n}</h3><span class="tag">${KIND_LABEL[e.kind]}</span><p>${e.d}</p>
+    <div class="foot"><a class="rules-link" href="${BASE}${e.slug}" target="_blank" rel="noopener">Official rules ↗</a>
+    <button class="add${on?" on":""}" aria-pressed="${on}">${on?'<svg class="chk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Added':'+ Add'}</button></div>`;
+  el.querySelector(".add").onclick=()=>toggle(e.id);return el;
 }
+function toggle(id){if(state.picked.has(id))state.picked.delete(id);else state.picked.add(id);persistPicks();render();}
 
-function toggle(id){
-  if(state.picked.has(id)) state.picked.delete(id); else state.picked.add(id);
-  persist(); render();
-}
-
-/* ---------------- Lineup tray ---------------- */
-const tray=document.getElementById("tray");
-const badge=document.getElementById("badge");
-const trayList=document.getElementById("trayList");
-document.getElementById("trayToggle").onclick=function(){
-  const open=tray.classList.toggle("open");
-  this.setAttribute("aria-expanded",open);
-  document.getElementById("caret").style.transform=open?"rotate(180deg)":"";
-};
-function pickedEvents(){
-  return EVENTS.filter(e=>state.picked.has(e.id))
-    .sort((a,b)=>CATS.findIndex(c=>c.id===a.cat)-CATS.findIndex(c=>c.id===b.cat) || a.n.localeCompare(b.n));
-}
+/* ================= Tray ================= */
+const badge=document.getElementById("badge"),trayList=document.getElementById("trayList"),tray=document.getElementById("tray");
+document.getElementById("trayToggle").onclick=function(){const o=tray.classList.toggle("open");this.setAttribute("aria-expanded",o);document.getElementById("caret").style.transform=o?"rotate(180deg)":"";};
+function pickedEvents(){return EVENTS.filter(e=>state.picked.has(e.id)).sort((a,b)=>CATS.findIndex(c=>c.id===a.cat)-CATS.findIndex(c=>c.id===b.cat)||a.n.localeCompare(b.n));}
 function updateTray(){
-  const picks=pickedEvents();
-  badge.textContent=picks.length;
+  const picks=pickedEvents();badge.textContent=picks.length;
   document.getElementById("btnClear").disabled=!picks.length;
   document.getElementById("btnCopy").disabled=!picks.length;
-  trayList.innerHTML = picks.length ? "" : `<div style="padding:14px 0;color:var(--ink-soft)">No events yet — hit <b>+ Add</b> on any card to start your lineup.</div>`;
+  document.getElementById("btnSubmit").disabled=!picks.length||state.submitting;
+  trayList.innerHTML=picks.length?"":`<div style="padding:14px 0;color:var(--ink-soft)">No events yet — hit <b>+ Add</b> on any card to start your lineup.</div>`;
   picks.forEach(e=>{
-    const row=document.createElement("div"); row.className="pick";
-    row.innerHTML=`<span class="pdot" style="--cc:${CATVAR[e.cat]}"></span> <span>${e.n}</span>
-      <span class="pmeta">Div ${e.divs.join("/")} &middot; ${KIND_LABEL[e.kind]}</span>
-      <button aria-label="Remove ${e.n}">×</button>`;
-    row.querySelector("button").onclick=()=>toggle(e.id);
-    trayList.appendChild(row);
+    const row=document.createElement("div");row.className="pick";
+    row.innerHTML=`<span class="pdot" style="--cc:${CATVAR[e.cat]}"></span><span>${e.n}</span><span class="pmeta">${KIND_LABEL[e.kind]}</span><button aria-label="Remove ${e.n}">×</button>`;
+    row.querySelector("button").onclick=()=>toggle(e.id);trayList.appendChild(row);
   });
 }
+function listText(){let out=`Science Olympiad events — ${state.name||""} (Grade ${state.grade||"?"})\n`;CATS.forEach(c=>{const g=pickedEvents().filter(e=>e.cat===c.id);if(g.length)out+="\n"+c.name+"\n"+g.map(e=>"  • "+e.n).join("\n")+"\n";});return out;}
+document.getElementById("btnCopy").onclick=()=>{if(state.picked.size)copy(listText(),"Event list copied");};
+document.getElementById("btnClear").onclick=()=>{if(state.picked.size&&confirm("Clear all events from your lineup?")){state.picked.clear();persistPicks();render();}};
 
-/* ---------------- Actions ---------------- */
-function listText(){
-  const picks=pickedEvents();
-  let out="My Science Olympiad events\n";
-  CATS.forEach(c=>{
-    const g=picks.filter(e=>e.cat===c.id);
-    if(g.length){ out+="\n"+c.name+"\n"+g.map(e=>"  • "+e.n+" (Div "+e.divs.join("/")+")").join("\n")+"\n"; }
-  });
-  return out;
-}
-document.getElementById("btnCopy").onclick=()=>{
-  if(!state.picked.size) return;
-  copy(listText(),"Event list copied");
+/* ================= Gate (name + grade) ================= */
+const overlay=document.getElementById("overlay"),gateView=document.getElementById("gateView"),doneView=document.getElementById("doneView");
+const idbar=document.getElementById("idbar");
+function showGate(){gateView.hidden=false;doneView.hidden=true;overlay.hidden=false;setTimeout(()=>document.getElementById("gName").focus(),60);}
+function hideOverlay(){overlay.hidden=true;}
+function showIdBar(){document.getElementById("idName").textContent=state.name;document.getElementById("idGrade").textContent="Grade "+state.grade;idbar.hidden=false;}
+document.getElementById("gStart").onclick=()=>{
+  const name=document.getElementById("gName").value.trim();
+  const grade=document.getElementById("gGrade").value;
+  const err=document.getElementById("gErr");
+  if(name.length<2){err.textContent="Please enter your full name.";return;}
+  if(!grade){err.textContent="Please choose your grade.";return;}
+  err.textContent="";
+  state.name=name;state.grade=grade;persistIdentity();
+  hideOverlay();showIdBar();
 };
-document.getElementById("btnLink").onclick=()=>{
-  const url=location.origin+location.pathname+"#p="+[...state.picked].join(",");
-  copy(url,"Shareable link copied");
-};
-document.getElementById("btnClear").onclick=()=>{
-  if(!state.picked.size) return;
-  if(confirm("Clear all events from your lineup?")){ state.picked.clear(); persist(); render(); }
-};
-document.getElementById("btnPrint").onclick=()=>{
-  const picks=pickedEvents();
-  let html="<h2>My Science Olympiad Events</h2>";
-  if(!picks.length){ html+="<p>No events selected yet.</p>"; }
-  CATS.forEach(c=>{
-    const g=picks.filter(e=>e.cat===c.id);
-    if(g.length){ html+=`<div class="pcat">${c.name}</div><ul>`+g.map(e=>`<li>${e.n} <em>(Div ${e.divs.join("/")})</em></li>`).join("")+"</ul>"; }
-  });
-  document.getElementById("printArea").innerHTML=html;
-  window.print();
-};
-
-function copy(text,msg){
-  const done=()=>toast(msg);
-  if(navigator.clipboard&&navigator.clipboard.writeText){
-    navigator.clipboard.writeText(text).then(done).catch(()=>fallbackCopy(text,done));
-  } else fallbackCopy(text,done);
-}
-function fallbackCopy(text,cb){
-  const ta=document.createElement("textarea"); ta.value=text; ta.style.position="fixed"; ta.style.opacity="0";
-  document.body.appendChild(ta); ta.select();
-  try{ document.execCommand("copy"); cb(); }catch(e){ toast("Copy failed — select manually"); }
-  document.body.removeChild(ta);
-}
-let toastTimer;
-function toast(msg){
-  const t=document.getElementById("toast"); t.textContent=msg; t.classList.add("show");
-  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove("show"),1900);
+document.getElementById("gName").addEventListener("keydown",e=>{if(e.key==="Enter")document.getElementById("gGrade").focus();});
+document.getElementById("switchBtn").onclick=()=>resetAll();
+function resetAll(){
+  state.picked.clear();state.name=null;state.grade=null;state.cat="all";state.q="";
+  ssDel("so_picks");ssDel("so_identity");ssDel("so_submitted");
+  document.getElementById("gName").value="";document.getElementById("gGrade").value="";document.getElementById("gErr").textContent="";
+  idbar.hidden=true;render();showGate();
 }
 
+/* ================= Submit ================= */
+function setSubmitting(b){state.submitting=b;const btn=document.getElementById("btnSubmit");btn.disabled=b||!state.picked.size;btn.textContent=b?"Submitting…":"Submit selection";}
+document.getElementById("btnSubmit").onclick=submitSelection;
+async function submitSelection(){
+  if(!state.picked.size)return;
+  if(!isConfigured()){toast("Submissions aren't set up yet — the Apps Script URL is missing.");return;}
+  const events=pickedEvents().map(e=>e.n);
+  if(!confirm(`Submit your final selection of ${events.length} event${events.length>1?"s":""}? You won't be able to change it afterward.`))return;
+  setSubmitting(true);
+  const payload={name:state.name,grade:state.grade,events:events,count:events.length};
+  try{
+    const res=await fetch(SUBMIT_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)});
+    const data=await res.json();
+    if(data.status==="ok"){finishSubmission(payload,false);}
+    else if(data.status==="duplicate"){finishSubmission(payload,true);}
+    else{throw new Error(data.message||"Unexpected response");}
+  }catch(err){
+    setSubmitting(false);
+    toast("Couldn't submit — check your connection and try again.");
+  }
+}
+function finishSubmission(payload,isDup){
+  ssSet("so_submitted",JSON.stringify(Object.assign({dup:isDup,ts:Date.now()},payload)));
+  showDone(payload,isDup);
+}
+function showDone(payload,isDup){
+  const items=EVENTS.filter(e=>payload.events.includes(e.n))
+    .sort((a,b)=>CATS.findIndex(c=>c.id===a.cat)-CATS.findIndex(c=>c.id===b.cat));
+  const list=items.map(e=>`<li><span class="pdot" style="background:${CATHEX[e.cat]}"></span>${e.n}</li>`).join("");
+  doneView.innerHTML=`
+    <div class="done-badge${isDup?" dup":""}">${isDup
+      ?'<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="9"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>'
+      :'<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M20 6 9 17l-5-5"/></svg>'}</div>
+    <h2>${isDup?"You've already submitted":"Your selection is in!"}</h2>
+    <p class="sub">${isDup
+      ?`Our records already show a submission for <b>${payload.name}</b>, Grade ${payload.grade}. Each student can submit once. If this looks wrong, talk to your coach.`
+      :`Thanks, <b>${payload.name}</b>. Your ${payload.events.length} event${payload.events.length>1?"s have":" has"} been recorded for Grade ${payload.grade}.`}</p>
+    <ul class="done-list">${list}</ul>
+    <div class="newform">Sharing this computer? <button id="newFormBtn">Start a new form for the next student</button></div>`;
+  gateView.hidden=true;doneView.hidden=false;overlay.hidden=false;
+  document.getElementById("newFormBtn").onclick=()=>resetAll();
+}
+
+/* ================= Utilities ================= */
+function copy(text,msg){const done=()=>toast(msg);if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(text).then(done).catch(()=>fallbackCopy(text,done));else fallbackCopy(text,done);}
+function fallbackCopy(text,cb){const ta=document.createElement("textarea");ta.value=text;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");cb();}catch(e){toast("Copy failed — select manually");}document.body.removeChild(ta);}
+let toastTimer;function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove("show"),2400);}
+
+/* ================= Init ================= */
 render();
+(function init(){
+  let submitted=null;try{submitted=JSON.parse(ssGet("so_submitted")||"null");}catch(e){}
+  if(submitted){showDone(submitted,submitted.dup);return;}
+  if(state.name&&state.grade){showIdBar();hideOverlay();}
+  else{showGate();}
+})();
 </script>
 </body>
 </html>
