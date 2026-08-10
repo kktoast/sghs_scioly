@@ -76,6 +76,13 @@
   .add.on{background:var(--gold);border-color:var(--gold-deep);color:#3a2b00}
   .add .chk{width:14px;height:14px}
 
+  .cardmates{border-top:1px dashed var(--line);padding-top:10px;margin-top:2px;display:flex;flex-direction:column;gap:6px}
+  .cm-label{font-size:.76rem;color:var(--ink-soft);font-weight:600}
+  .cardmates input{width:100%;padding:7px 10px;border:1px solid var(--line);border-radius:8px;font:inherit;font-size:.83rem;color:var(--ink);background:var(--paper)}
+  .cardmates input:focus{outline:2px solid var(--gold);outline-offset:1px;border-color:transparent}
+  .cm-notsure{align-self:flex-start;font:inherit;font-size:.76rem;background:none;border:0;color:var(--c-earth);cursor:pointer;text-decoration:underline;text-underline-offset:2px;padding:0}
+  .cm-solo{font-size:.78rem;color:var(--ink-soft)}
+
   .empty{text-align:center;padding:60px 20px;color:var(--ink-soft);border:1px dashed var(--line);border-radius:var(--radius);margin-top:20px}
   .empty b{color:var(--ink);font-family:"Space Grotesk",sans-serif}
 
@@ -326,9 +333,36 @@ function card(e){
   } else {
     action = `<button class="add${on?" on":""}" aria-pressed="${on}">${on?'<svg class="chk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Added':'+ Add'}</button>`;
   }
+  // Inline teammate entry, shown once the event is added.
+  let mates="";
+  const partners=state.partners[e.id]||[];
+  if(on && e.max>1){
+    if(state.locked){
+      const named=partners.filter(Boolean);
+      mates=`<div class="cardmates"><div class="cm-solo">${named.length?("Teammates: "+named.join(", ")):"Entered solo (no teammate)"}</div></div>`;
+    } else {
+      let inputs="";
+      for(let i=0;i<e.max-1;i++){
+        inputs+=`<input type="text" data-ev="${e.id}" data-i="${i}" placeholder="Teammate ${e.max>2?(i+1)+" ":""}— e.g., Alex K" value="${(partners[i]||"").replace(/"/g,'&quot;')}">`;
+      }
+      mates=`<div class="cardmates"><div class="cm-label">Add teammate${e.max>2?"s":""} (up to ${e.max-1}), or skip:</div>${inputs}<button class="cm-notsure" type="button">Not sure yet — enter without a teammate</button></div>`;
+    }
+  }
   el.innerHTML=`<h3>${e.n}</h3><span class="tag">${KIND_LABEL[e.kind]} · Team of up to ${e.max}</span><p>${e.d}</p>
+    ${mates}
     <div class="foot"><a class="rules-link" href="${BASE}${e.slug}" target="_blank" rel="noopener">Official rules ↗</a>${action}</div>`;
-  if(!state.locked){const b=el.querySelector("button.add");if(b)b.onclick=()=>toggle(e.id);}
+  if(!state.locked){
+    const b=el.querySelector("button.add");if(b)b.onclick=()=>toggle(e.id);
+    el.querySelectorAll(".cardmates input").forEach(inp=>{
+      inp.addEventListener("input",()=>{
+        const id=inp.dataset.ev,i=+inp.dataset.i;
+        if(!state.partners[id])state.partners[id]=[];
+        state.partners[id][i]=inp.value;
+      });
+    });
+    const ns=el.querySelector(".cm-notsure");
+    if(ns)ns.onclick=()=>{state.partners[e.id]=[];render();};
+  }
   return el;
 }
 function toggle(id){
@@ -340,7 +374,7 @@ function toggle(id){
 
 /* ================= Tray ================= */
 const badge=document.getElementById("badge"),trayList=document.getElementById("trayList"),tray=document.getElementById("tray");
-document.getElementById("trayToggle").onclick=function(){const o=tray.classList.toggle("open");this.setAttribute("aria-expanded",o);document.getElementById("caret").style.transform=o?"rotate(180deg)":"";};
+document.getElementById("trayToggle").onclick=function(){const o=tray.classList.toggle("open");this.setAttribute("aria-expanded",o);document.getElementById("caret").style.transform=o?"rotate(180deg)":"";if(o)updateTray();};
 function pickedEvents(){return EVENTS.filter(e=>state.picked.has(e.id)).sort((a,b)=>CATS.findIndex(c=>c.id===a.cat)-CATS.findIndex(c=>c.id===b.cat)||a.n.localeCompare(b.n));}
 function updateTray(){
   const picks=pickedEvents();badge.textContent=picks.length;
@@ -353,35 +387,15 @@ function updateTray(){
   document.querySelector(".tray-count").firstChild.textContent=state.locked?"Your submitted lineup ":"My lineup ";
   trayList.innerHTML="";
   if(!picks.length){trayList.innerHTML=`<div style="padding:14px 0;color:var(--ink-soft)">No events yet — hit <b>+ Add</b> on any card to start your lineup.</div>`;return;}
-  if(!state.locked)trayList.insertAdjacentHTML("beforeend",`<div class="tray-hint">Add teammates for each event below (optional). Use the name format like <b>Alex K</b>.</div>`);
+  if(!state.locked)trayList.insertAdjacentHTML("beforeend",`<div class="tray-hint">Review your events below. Add teammates on each event card. Blank means you'll be entered solo.</div>`);
   picks.forEach(e=>{
+    const partners=(state.partners[e.id]||[]).map(s=>(s||"").trim()).filter(Boolean);
+    const team=partners.length?("You + "+partners.join(", ")):"Solo (no teammate yet)";
     const block=document.createElement("div");block.className="pick-block";
-    const partners=state.partners[e.id]||[];
-    let matesHtml="";
-    if(state.locked){
-      matesHtml = partners.filter(Boolean).length
-        ? `<div class="mates"><div class="matetext">Teammates: ${partners.filter(Boolean).join(", ")}</div></div>`
-        : "";
-    } else {
-      let inputs="";
-      for(let i=0;i<e.max-1;i++){
-        inputs+=`<input type="text" data-ev="${e.id}" data-i="${i}" placeholder="Teammate ${i+1} (optional) — e.g., Alex K" value="${(partners[i]||"").replace(/"/g,'&quot;')}">`;
-      }
-      matesHtml=`<div class="mates">${inputs}</div>`;
-    }
     block.innerHTML=`<div class="pick-head"><span class="pdot" style="background:${CATHEX[e.cat]}"></span><b>${e.n}</b>
       <span class="limit">up to ${e.max}</span>${state.locked?"":'<button class="rm" aria-label="Remove '+e.n+'">×</button>'}</div>
-      <div class="you">You: <b>${state.name||""}</b></div>${matesHtml}`;
-    if(!state.locked){
-      block.querySelector(".rm").onclick=()=>toggle(e.id);
-      block.querySelectorAll(".mates input").forEach(inp=>{
-        inp.addEventListener("input",()=>{
-          const id=inp.dataset.ev,i=+inp.dataset.i;
-          if(!state.partners[id])state.partners[id]=[];
-          state.partners[id][i]=inp.value;
-        });
-      });
-    }
+      <div class="you">${team}</div>`;
+    if(!state.locked)block.querySelector(".rm").onclick=()=>toggle(e.id);
     trayList.appendChild(block);
   });
 }
