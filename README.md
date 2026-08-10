@@ -131,3 +131,8 @@ President Kaaviyan Kannaiyan for the Science Olympiad Division C season 2026-202
 affiliated with Science Olympiad, Inc. Event names, categories, and rules belong
 to Science Olympiad, Inc. (https://www.soinc.org) — always confirm details in the
 official rule book for each event.
+
+
+## Quick Note
+
+- Don't worry about the json files and whatnot, that is if the student wants to view it as a separate window
