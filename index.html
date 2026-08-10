@@ -81,7 +81,9 @@
   .cardmates input{width:100%;padding:7px 10px;border:1px solid var(--line);border-radius:8px;font:inherit;font-size:.83rem;color:var(--ink);background:var(--paper)}
   .cardmates input:focus{outline:2px solid var(--gold);outline-offset:1px;border-color:transparent}
   .cm-notsure{align-self:flex-start;font:inherit;font-size:.76rem;background:none;border:0;color:var(--c-earth);cursor:pointer;text-decoration:underline;text-underline-offset:2px;padding:0}
-  .cm-solo{font-size:.78rem;color:var(--ink-soft)}
+  .cm-addmate{font:inherit;font-size:.76rem;background:none;border:0;color:var(--c-earth);cursor:pointer;text-decoration:underline;text-underline-offset:2px;padding:0}
+  .cm-solo{font-size:.8rem;color:var(--c-life);font-weight:600;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .cm-solo .cm-addmate{color:var(--ink-soft);font-weight:400}
 
   .empty{text-align:center;padding:60px 20px;color:var(--ink-soft);border:1px dashed var(--line);border-radius:var(--radius);margin-top:20px}
   .empty b{color:var(--ink);font-family:"Space Grotesk",sans-serif}
@@ -279,7 +281,7 @@ EVENTS.forEach(e=> e.id = e.n.toLowerCase().replace(/[^a-z0-9]+/g,"-"));
 const byId={}; EVENTS.forEach(e=>byId[e.id]=e);
 
 /* ================= State (in-memory only; nothing saved on the device) ================= */
-const state={cat:"all",q:"",name:null,picked:new Set(),partners:{},submitting:false,locked:false};
+const state={cat:"all",q:"",name:null,picked:new Set(),partners:{},solo:new Set(),submitting:false,locked:false};
 
 /* ================= Name format helper ================= */
 // Capitalized first name, a space, then a single capital letter. e.g. "Jordan L"
@@ -339,7 +341,9 @@ function card(e){
   if(on && e.max>1){
     if(state.locked){
       const named=partners.filter(Boolean);
-      mates=`<div class="cardmates"><div class="cm-solo">${named.length?("Teammates: "+named.join(", ")):"Entered solo (no teammate)"}</div></div>`;
+      mates=`<div class="cardmates"><div class="cm-solo" style="color:var(--ink-soft)">${named.length?("Teammates: "+named.join(", ")):"Entered solo (no teammate)"}</div></div>`;
+    } else if(state.solo.has(e.id)){
+      mates=`<div class="cardmates"><div class="cm-solo"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Entered solo — no teammate. <button class="cm-addmate" type="button">Add a teammate instead</button></div></div>`;
     } else {
       let inputs="";
       for(let i=0;i<e.max-1;i++){
@@ -361,13 +365,15 @@ function card(e){
       });
     });
     const ns=el.querySelector(".cm-notsure");
-    if(ns)ns.onclick=()=>{state.partners[e.id]=[];render();};
+    if(ns)ns.onclick=()=>{state.partners[e.id]=[];state.solo.add(e.id);render();};
+    const am=el.querySelector(".cm-addmate");
+    if(am)am.onclick=()=>{state.solo.delete(e.id);render();};
   }
   return el;
 }
 function toggle(id){
   if(state.locked)return;
-  if(state.picked.has(id)){state.picked.delete(id);delete state.partners[id];}
+  if(state.picked.has(id)){state.picked.delete(id);delete state.partners[id];state.solo.delete(id);}
   else{state.picked.add(id);state.partners[id]=[];}
   render();
 }
@@ -411,7 +417,7 @@ function listText(){
   return out+"\n";
 }
 document.getElementById("btnCopy").onclick=()=>{if(state.picked.size)copy(listText(),"Event list copied");};
-document.getElementById("btnClear").onclick=()=>{if(state.picked.size&&confirm("Clear all events from your lineup?")){state.picked.clear();state.partners={};render();}};
+document.getElementById("btnClear").onclick=()=>{if(state.picked.size&&confirm("Clear all events from your lineup?")){state.picked.clear();state.partners={};state.solo.clear();render();}};
 
 /* ================= Gate (name) ================= */
 const overlay=document.getElementById("overlay"),gateView=document.getElementById("gateView"),doneView=document.getElementById("doneView");
@@ -433,7 +439,7 @@ document.getElementById("gStart").onclick=()=>{
 document.getElementById("gName").addEventListener("keydown",e=>{if(e.key==="Enter")document.getElementById("gStart").click();});
 document.getElementById("switchBtn").onclick=()=>resetAll();
 function resetAll(){
-  state.picked.clear();state.partners={};state.name=null;state.cat="all";state.q="";state.locked=false;state.submitting=false;
+  state.picked.clear();state.partners={};state.solo.clear();state.name=null;state.cat="all";state.q="";state.locked=false;state.submitting=false;
   document.getElementById("gName").value="";document.getElementById("gErr").textContent="";document.getElementById("search").value="";
   idbar.hidden=true;render();showGate();
 }
