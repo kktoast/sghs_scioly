@@ -4,7 +4,7 @@ A single-page website where high school students browse the Division C Science
 Olympiad events, pick the ones they want to compete in, add teammates for each,
 and submit a final list.
 
-**Live site:** `[https://kktoast.github.io/sghs_scioly/]`
+**Live site:** [`[https://kktoast.github.io/sghs_scioly/]`](https://kktoast.github.io/sghs_scioly/)
 
 ## What it does
 
