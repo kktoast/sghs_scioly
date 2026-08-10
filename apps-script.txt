@@ -1,0 +1,185 @@
+/**
+ * Science Olympiad event-selection collector.
+ *
+ * Stores each student's submission on the "Submissions" tab (one row per
+ * student), and also maintains a "Teams by Event" tab that merges partners:
+ * for every event, people who listed the same team collapse into ONE row with
+ * a single Partners column. Identical teams from different submitters (e.g. two
+ * partners who each named the other) merge into one data point.
+ *
+ * SETUP (once): Extensions -> Apps Script, paste this file, Save, then
+ *   Deploy -> Manage deployments -> edit -> Version: New version -> Deploy.
+ * The "Teams by Event" tab rebuilds automatically after each submission, and
+ * you can rebuild it any time from the "SciOly Tools" menu (reopen the sheet
+ * once after deploying for that menu to appear).
+ */
+
+var SHEET_NAME   = "Submissions";
+var SUMMARY_NAME = "Teams by Event";
+var VERSION = "v4-teams-merge";
+
+// ---- Menu (appears after you reopen the spreadsheet) ----
+function onOpen() {
+  SpreadsheetApp.getUi()
+    .createMenu("SciOly Tools")
+    .addItem("Rebuild team summary", "buildTeamSummary")
+    .addToUi();
+}
+
+// ---- Web app entry points ----
+function doGet(e) {
+  var p = (e && e.parameter) ? e.parameter : {};
+  var callback = p.callback || "";
+  if (!p.name && !p.sel) {
+    return reply(callback, { status: "alive", version: VERSION });
+  }
+  return reply(callback, processSubmission(p.name, p.sel));
+}
+
+function doPost(e) {
+  try {
+    var body = JSON.parse(e.postData.contents);
+    var sel = Array.isArray(body.groups)
+      ? body.groups.map(function (g) { return g.event + "::" + (g.members || []).join(","); }).join("~~")
+      : (body.sel || "");
+    return reply("", processSubmission(body.name, sel));
+  } catch (err) {
+    return reply("", { status: "error", message: String(err) });
+  }
+}
+
+/** sel format: groups joined by "~~"; each group "EventName::MemberA,MemberB". */
+function processSubmission(rawName, sel) {
+  var name = String(rawName || "").trim();
+  sel = String(sel || "").trim();
+  if (!name || !sel) {
+    return { status: "error", message: "Missing name or selections." };
+  }
+
+  var groups = sel.split("~~");
+  var lines = [];
+  var eventCount = 0;
+  for (var i = 0; i < groups.length; i++) {
+    var parts = groups[i].split("::");
+    var eventName = String(parts[0] || "").trim();
+    if (!eventName) continue;
+    var members = (parts[1] || "").split(",").map(function (s) { return s.trim(); })
+      .filter(function (s) { return s !== ""; });
+    lines.push(eventName + ": " + members.join(", "));
+    eventCount++;
+  }
+  var selectionsCell = lines.join("\n");
+
+  var lock = LockService.getScriptLock();
+  try { lock.waitLock(30000); }
+  catch (err) { return { status: "error", message: "Server busy, please retry." }; }
+
+  try {
+    var sheet = getSheet();
+    var rows = sheet.getDataRange().getValues();
+    var key = name.toLowerCase();
+    for (var r = 1; r < rows.length; r++) {
+      if (String(rows[r][1]).trim().toLowerCase() === key) {
+        return { status: "duplicate" };
+      }
+    }
+    sheet.appendRow([ new Date(), name, selectionsCell, eventCount ]);
+    try { buildTeamSummary(); } catch (e2) {} // keep summary current; never block a submission
+    return { status: "ok" };
+  } catch (err) {
+    return { status: "error", message: String(err) };
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+/**
+ * Rebuilds the "Teams by Event" tab from all submissions.
+ * Merges identical teams (same event + same set of names) into one row.
+ */
+function buildTeamSummary() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var src = ss.getSheetByName(SHEET_NAME);
+  if (!src) return;
+
+  var data = src.getDataRange().getValues(); // Timestamp, Name, Selections, Count
+  var teams = {}; // canonicalKey -> { event, members:[display], submits:int }
+
+  for (var r = 1; r < data.length; r++) {
+    var cell = String(data[r][2] || "");
+    if (!cell) continue;
+    var lines = cell.split("\n");
+    for (var l = 0; l < lines.length; l++) {
+      var line = String(lines[l]).trim();
+      if (!line) continue;
+
+      var idx = line.indexOf(": ");
+      var event, membersRaw;
+      if (idx === -1) { event = line; membersRaw = ""; }
+      else { event = line.substring(0, idx).trim(); membersRaw = line.substring(idx + 2); }
+
+      var members = membersRaw.split(",").map(function (s) { return s.trim(); })
+        .filter(function (s) { return s !== ""; });
+
+      // de-duplicate names within the same team entry
+      var seen = {}, uniq = [];
+      for (var m = 0; m < members.length; m++) {
+        var lk = members[m].toLowerCase();
+        if (!seen[lk]) { seen[lk] = true; uniq.push(members[m]); }
+      }
+
+      var canon = uniq.map(function (x) { return x.toLowerCase(); }).sort().join("|");
+      var key = event.toLowerCase() + "##" + canon;
+
+      if (!teams[key]) {
+        var disp = uniq.slice().sort(function (a, b) {
+          return a.toLowerCase() < b.toLowerCase() ? -1 : (a.toLowerCase() > b.toLowerCase() ? 1 : 0);
+        });
+        teams[key] = { event: event, members: disp, submits: 0 };
+      }
+      teams[key].submits++;
+    }
+  }
+
+  var out = [];
+  Object.keys(teams).forEach(function (k) {
+    var t = teams[k];
+    out.push([ t.event, t.members.join(", "), t.members.length, t.submits ]);
+  });
+  out.sort(function (a, b) {
+    if (a[0].toLowerCase() !== b[0].toLowerCase()) return a[0].toLowerCase() < b[0].toLowerCase() ? -1 : 1;
+    return a[1].toLowerCase() < b[1].toLowerCase() ? -1 : 1;
+  });
+
+  var sheet = ss.getSheetByName(SUMMARY_NAME);
+  if (!sheet) sheet = ss.insertSheet(SUMMARY_NAME);
+  sheet.clear();
+  sheet.appendRow(["Event", "Partners (team)", "Team size", "# who submitted this"]);
+  sheet.setFrozenRows(1);
+  if (out.length) sheet.getRange(2, 1, out.length, 4).setValues(out);
+  sheet.setColumnWidth(1, 200);
+  sheet.setColumnWidth(2, 320);
+}
+
+function getSheet() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName(SHEET_NAME);
+  if (!sheet) {
+    sheet = ss.insertSheet(SHEET_NAME);
+    sheet.appendRow(["Timestamp", "Name", "Selections", "Event count"]);
+    sheet.setFrozenRows(1);
+    sheet.getRange("C:C").setWrap(true);
+    sheet.setColumnWidth(3, 340);
+  }
+  return sheet;
+}
+
+function reply(callback, obj) {
+  var payload = JSON.stringify(obj);
+  if (callback) {
+    return ContentService.createTextOutput(callback + "(" + payload + ")")
+      .setMimeType(ContentService.MimeType.JAVASCRIPT);
+  }
+  return ContentService.createTextOutput(payload)
+    .setMimeType(ContentService.MimeType.JSON);
+}
