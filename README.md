@@ -132,6 +132,8 @@ affiliated with Science Olympiad, Inc. Event names, categories, and rules belong
 to Science Olympiad, Inc. (https://www.soinc.org) — always confirm details in the
 official rule book for each event.
 
+also shout out to da goat Shirley Vo for testing.
+
 
 ## Quick Note
 
